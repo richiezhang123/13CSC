@@ -1,6 +1,6 @@
 from tkinter import *
 from PIL import Image, ImageTk
-from tkinter.ttk import *
+
 class MenuPage:
     def __init__(self,parent):
         self.window_width = parent.winfo_screenwidth()
@@ -11,15 +11,31 @@ class MenuPage:
         self.background_image_tk = ImageTk.PhotoImage(self.background_image)
 
         self.studi_frame = Frame(parent)
-        self.studi_frame.pack(fill="both", expand=TRUE)
+        self.studi_frame.pack(fill=BOTH, expand=TRUE)
 
-        self.image_label = Label(self.studi_frame, image=self.background_image_tk)  # Creates a label, which holds the background image
-        self.image_label.place(x=0, y=0, relwidth=1, relheight=1)  # Ensures that the label/image fits the entire screen
+        self.image_label = Label(self.studi_frame, image=self.background_image_tk, borderwidth=0)  # Creates a label, which holds the background image
+        self.image_label.place(relwidth=1, relheight=1)  # Ensures that the label/image fits the entire screen
 
-        self.timer_image =PhotoImage("Timer Button.png")
+        # self.text_label = Label(self.studi_frame, text = "Hi", font=["Tw Cen Mt", "26", "bold"])
+        # self.text_label.place(relx=0.5, rely=0.78, anchor="center")
 
-        self.timer_button = Button(self.studi_frame, text = "", image=self.timer_image)
-        self.timer_button.place(relx=0.5, rely = 0.6, anchor="center")
+        self.timer_image = Image.open("Timer.png")
+        self.timer_image_tk = ImageTk.PhotoImage(self.timer_image)
+
+        self.tasks_image = Image.open("Tasks.png")
+        self.tasks_image_tk = ImageTk.PhotoImage(self.tasks_image)
+
+        self.timer_button = Button(self.studi_frame, image = self.timer_image_tk, command = clicked, cursor = "hand2")
+        self.timer_button.place(relx = 0.27, rely= 0.44)
+
+        self.tasks_button = Button(self.studi_frame, image = self.tasks_image_tk, command = clicked, cursor = "hand2")
+        self.tasks_button.place(relx = 0.53, rely= 0.44)
+
+def clicked():
+    print("Hi")
+
+
+
 #Runs the program
 if __name__ == "__main__": #Ensures the code only runs when the program is executed
     root = Tk() #Creates the root Tkinter window
