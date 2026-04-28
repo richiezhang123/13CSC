@@ -24,6 +24,15 @@ class MenuPage:
         self.tasks_image = Image.open("Tasks.png")
         self.tasks_image_tk = ImageTk.PhotoImage(self.tasks_image)
 
+        self.user_image = Image.open("User.png")
+        self.user_image_tk = ImageTk.PhotoImage(self.user_image)
+
+        self.settings_image = Image.open("Settings.png")
+        self.settings_image_tk = ImageTk.PhotoImage(self.settings_image)
+
+        self.exit_image = Image.open("Exit.png")
+        self.exit_image_Tk = ImageTk.PhotoImage(self.exit_image)
+
         self.timer_button = Button(self.studi_frame, image = self.timer_image_tk, command = clicked, cursor = "hand2", bg="#a60c09", borderwidth=0, activebackground="#a60c09")
         self.timer_button.place(relx = 0.27, rely= 0.44)
         pywinstyles.set_opacity(self.timer_button, color="#a60c09")
@@ -32,24 +41,24 @@ class MenuPage:
         self.tasks_button.place(relx = 0.53, rely= 0.44)
         pywinstyles.set_opacity(self.timer_button, color="#a60c09")
 
+        self.user_button = Button(self.studi_frame, image = self.user_image_tk, command = clicked, cursor = "hand2", bg="#8d0401", borderwidth=0, activebackground="#8d0401")
+        self.user_button.place(relx = 0.85, rely= 0.022)
+        pywinstyles.set_opacity(self.user_button, color="#8d0401")
 
-def clicked():
-    print("Hi")
-#
-# window = Tk()
-# window_width = window.winfo_screenwidth()
-# window_height = window.winfo_screenheight()
-# window.geometry = (window_width,window_height)
-#
-# canvas = Canvas(window, width = window_width, height = window_height, borderwidth=0)
-# canvas.pack()
-#
-# bgImage = ImageTk.PhotoImage(Image.open("Menu.png"))
-# bg = canvas.create_image(0, 0, image=bgImage, anchor=NW)
-#
-# TimerImage = ImageTk.PhotoImage(Image.open("Timer.png"))
-# TimerButton = canvas.create_image(50, 50, image=TimerImage)
-# # canvas.tag_bind(quitButton, "<Button-1>", quitGame)
+        self.settings_button = Button(self.studi_frame, image = self.settings_image_tk, command = clicked, cursor = "hand2", bg="#8d0401", borderwidth=0, activebackground="#8d0401")
+        self.settings_button.place(relx = 0.9, rely= 0.022)
+        pywinstyles.set_opacity(self.settings_button, color="#8d0401")
+
+        self.exit_button = Button(self.studi_frame, image = self.exit_image_Tk, command = exit_program, cursor = "hand2", bg="#8d0401", borderwidth=0, activebackground="#8d0401")
+        self.exit_button.place(relx = 0.95, rely= 0.022)
+        pywinstyles.set_opacity(self.exit_button, color="#8d0401")
+
+def clicked(self):
+    print("button clicked")
+
+def exit_program(self):
+    self.studi_frame.destroy()
+    exit()
 
 #Runs the program
 if __name__ == "__main__": #Ensures the code only runs when the program is executed
