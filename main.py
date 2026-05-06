@@ -2,7 +2,11 @@ from tkinter import *
 from PIL import Image, ImageTk
 import customtkinter
 import pywinstyles
+from playsound3 import playsound
+import pygame
 
+pygame.mixer.init()
+click_sound = pygame.mixer.Sound("mouse_click.mp3")
 class MenuPage:
     def __init__(self,parent):
         self.window_width = parent.winfo_screenwidth()
@@ -54,7 +58,7 @@ class MenuPage:
         self.settings_button.place(relx = 0.9, rely= 0.022)
 
         self.exit_button = Button(self.studi_frame, image = self.exit_image_Tk, command = self.exit_program, cursor = "hand2", bg="#8d0401",  borderwidth=0,   activebackground="#8d0401")
-        self.exit_button.place(relx = 0.95, rely= 0.022)
+        self.exit_button.place(relx = 0.95, rely= 0.027)
 
         self.timer_button.bind("<Enter>", self.timer_on_enter)
         self.timer_button.bind("<Leave>", self.timer_on_leave)
@@ -75,7 +79,9 @@ class MenuPage:
         self.exit_button.bind("<Leave>", self.exit_on_leave)
 
     def clicked(self):
+        click_sound.play()
         print("button clicked")
+
 
     def exit_program(self):
         self.studi_frame.destroy()
