@@ -11,9 +11,10 @@ import pyglet
 pygame.mixer.init()
 click_sound = pygame.mixer.Sound("mouse_click.mp3")
 
-# pyglet.options['win32_gdi_font'] = True
+pyglet.options['win32_gdi_font'] = True
 
 pyglet.font.add_file("Bernoru.ttf")
+pyglet.font.add_file("Gaco_Strong_Font_Demo.otf")
 
 
 class MenuPage:
@@ -180,8 +181,8 @@ class TimerPage:
         self.exit_button.bind("<Enter>", self.exit_on_enter)
         self.exit_button.bind("<Leave>", self.exit_on_leave)
 
-        self.timer_label = Label(self.studi_frame, text = "TIMER", font=('Bernoru Black Ultra Expanded', 25),fg = "white", bg = "#8d0401")
-        self.timer_label.pack()
+        self.timer_button2 = customtkinter.CTkButton(self.studi_frame, text = "TIMER", font=('Gaco Strong Demo', 50), text_color = "white", bg_color = "#9d0905", border_width=0)
+        self.timer_button2.place(relx=0.2,rely=0.26)
 
 
 
