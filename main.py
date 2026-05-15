@@ -181,8 +181,20 @@ class TimerPage:
         self.exit_button.bind("<Enter>", self.exit_on_enter)
         self.exit_button.bind("<Leave>", self.exit_on_leave)
 
-        self.timer_button2 = customtkinter.CTkButton(self.studi_frame, text = "TIMER", font=('Gaco Strong Demo', 50), text_color = "white", bg_color = "#9d0905", border_width=0)
-        self.timer_button2.place(relx=0.2,rely=0.26)
+        self.timer_button2 = customtkinter.CTkButton(
+            self.studi_frame,
+            text = "TIMER",
+            font=('Gaco Strong Demo', 50),
+            width = 250,
+            height = 60,
+            text_color = "white",
+            fg_color = "#9d0905",
+            border_width=0,
+            border_spacing=10,
+            corner_radius=0,
+            border_color="#9d0905",
+            hover_color="#8c0603")
+        self.timer_button2.place(relx=0.2,rely=0.28)
 
 
 
