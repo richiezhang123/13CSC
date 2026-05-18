@@ -53,7 +53,7 @@ class MenuPage:
 
         self.tasks_button = Button(self.studi_frame, image = self.tasks_image_tk, command = self.clicked, cursor = "hand2", bg="#a60c09", borderwidth=0, activebackground="#a60c09")
         self.tasks_button.place(relx = 0.53, rely= 0.44)
-        pywinstyles.set_opacity(self.timer_button, color="#a60c09")
+        pywinstyles.set_opacity(self.tasks_button, color="#a60c09")
 
         self.user_button = Button(self.studi_frame, image = self.user_image_tk, command = self.clicked, cursor = "hand2", bg="#8d0401", borderwidth=0, activebackground="#8d0401")
         self.user_button.place(relx = 0.85, rely= 0.022)
@@ -194,8 +194,67 @@ class TimerPage:
             corner_radius=0,
             border_color="#9d0905",
             hover_color="#8c0603")
-        self.timer_button2.place(relx=0.2,rely=0.28)
+        self.timer_button2.place(relx=0.21,rely=0.28)
 
+        self.short_break_button = customtkinter.CTkButton(
+            self.studi_frame,
+            text = "SHORT BREAK",
+            font=('Gaco Strong Demo', 50),
+            width = 550,
+            height = 60,
+            text_color = "white",
+            fg_color = "#9d0905",
+            border_width=0,
+            border_spacing=10,
+            corner_radius=0,
+            border_color="#9d0905",
+            hover_color="#8c0603")
+        self.short_break_button.place(relx=0.34,rely=0.28)
+
+        self.long_break_button = customtkinter.CTkButton(
+            self.studi_frame,
+            text = "LONG BREAK",
+            font=('Gaco Strong Demo', 50),
+            width = 450,
+            height = 60,
+            text_color = "white",
+            fg_color = "#9d0905",
+            border_width=0,
+            border_spacing=10,
+            corner_radius=0,
+            border_color="#9d0905",
+            hover_color="#8c0603")
+        self.long_break_button.place(relx=0.61,rely=0.28)
+
+        self.play_button = customtkinter.CTkButton(
+            self.studi_frame,
+            text="▶︎",
+            font=('Gaco Strong Demo', 100),
+            width=30,
+            height=30,
+            text_color="white",
+            fg_color="#870c09",
+            border_width=0,
+            border_spacing=10,
+            corner_radius=0,
+            border_color="#9d0905",
+            hover_color="#8c0603")
+        self.play_button.place(relx=0.4, rely=0.64)
+
+        self.pause_button = customtkinter.CTkButton(
+            self.studi_frame,
+            text="||",
+            font=('Gaco Strong Demo', 100),
+            width=100,
+            height=60,
+            text_color="white",
+            fg_color="#870c09",
+            border_width=0,
+            border_spacing=10,
+            corner_radius=0,
+            border_color="#9d0905",
+            hover_color="#8c0603")
+        self.pause_button.place(relx=0.54, rely=0.64)
 
 
     def clicked(self):
@@ -236,6 +295,7 @@ class TimerPage:
 #Runs the program
 if __name__ == "__main__": #Ensures the code only runs when the program is executed
     root = Tk()
+    canvas = Canvas(root)
     root.title("Studi") #Sets the title of the window to "Studi"
     root.attributes("-fullscreen", True) #Makes the window fullscreen
     studi_instance = MenuPage(root)  # Creates an instance of the MenuPage class
