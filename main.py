@@ -5,7 +5,7 @@ import pywinstyles
 from playsound3 import playsound
 import pygame
 import pyglet
-
+import time
 
 
 pygame.mixer.init()
@@ -228,8 +228,8 @@ class TimerPage:
 
         self.play_button = customtkinter.CTkButton(
             self.studi_frame,
-            text="▶︎",
-            font=('Gaco Strong Demo', 100),
+            text="▶",
+            font=('Gaco Strong Demo', 115),
             width=30,
             height=30,
             text_color="white",
@@ -238,23 +238,59 @@ class TimerPage:
             border_spacing=10,
             corner_radius=0,
             border_color="#9d0905",
-            hover_color="#8c0603")
-        self.play_button.place(relx=0.4, rely=0.64)
+            hover_color="#7D0502",
+            command = self.start_timer)
+        self.play_button.place(relx=0.4, rely=0.6327)
 
         self.pause_button = customtkinter.CTkButton(
             self.studi_frame,
             text="||",
             font=('Gaco Strong Demo', 100),
             width=100,
-            height=60,
+            height=40,
             text_color="white",
             fg_color="#870c09",
             border_width=0,
             border_spacing=10,
             corner_radius=0,
             border_color="#9d0905",
-            hover_color="#8c0603")
-        self.pause_button.place(relx=0.54, rely=0.64)
+            hover_color="#7D0502",
+            # command=self.pause_timer
+        )
+        self.pause_button.place(relx=0.54, rely=0.645)
+
+        self.timer_running = False
+        self.end_time = 0
+
+        self.minute_entry = Entry(self.studi_frame, text = "", font=('Gaco Strong Demo', 40))
+        self.minute_entry.place(relx = 0.34, rely = 0.6)
+
+        self.timer_label = Label(self.studi_frame, text = "Enter Time in Seconds", font=('Gaco Strong Demo', 40),)
+        self.timer_label.place(relx = 0.32, rely = 0.45)
+
+    def start_timer(self):
+        if not self.timer_running:
+            try:
+                seconds = int(self.entry.get()) #CHANGE TO self.input.get() from settings later
+                if seconds <=0:
+                    raise ValueError("Please enter a +ve number greater than 0 ")
+                self.end_time = time.time() + seconds
+                self.timer_running = True
+                self.update_timer()
+            except ValueError as e:
+                print("error", str(e))
+
+    def update_timer(self):
+        if self.timer_running:
+            remaining_time = int(self.end_time - time.time())
+            if remaining_time <= 0:
+                self.timer_running = False
+                self.timer_label = self.timer_label.configure(text="TIMES UP!")
+            else:
+                self.timer_label.configure(text=f"Time Remaining: {remaining_time} seconds")
+                self.studi_frame.after(1000,self.update_timer)
+
+
 
 
     def clicked(self):
