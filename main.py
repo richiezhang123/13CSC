@@ -164,7 +164,9 @@ class TimerPage:
         self.settings_image_tk = ImageTk.PhotoImage(self.settings_image)
 
         self.tasks_image = Image.open("Tasks.png")
-        self.tasks_image_tk = ImageTk.PhotoImage(self.tasks_image)
+        self.small_tasks_image = self.tasks_image.resize((240,108))
+        self.tasks_image_tk = ImageTk.PhotoImage(self.small_tasks_image)
+
 
         self.exit_image = Image.open("Exit.png")
         self.exit_image_Tk = ImageTk.PhotoImage(self.exit_image)
@@ -267,7 +269,13 @@ class TimerPage:
         self.end_time = 0
         self.time_remaining = 0
 
-        self.minute_entry = Entry(self.studi_frame, text = "", font=('Gaco Strong Demo', 20))
+        self.minute_entry = customtkinter.CTkEntry(
+            self.studi_frame,
+            font=('Gaco Strong Demo', 20),
+            placeholder_text = "Enter Time in Minutes",
+            width = 480,
+            height = 50,
+            corner_radius = 0)
         self.minute_entry.place(anchor="center",relx=0.475,rely=0.9)
 
         self.enter_button = customtkinter.CTkButton(
@@ -287,7 +295,7 @@ class TimerPage:
         )
         self.enter_button.place(relx=0.605, rely=0.88)
 
-        self.timer_label = Label(self.studi_frame, text = "00:00:00", font=('Gaco Strong Demo', 100), fg="white",bg="#a50c08")
+        self.timer_label = Label(self.studi_frame, text = "00:00:00", font=('Gaco Strong Demo', 125), fg="white",bg="#a50c08")
         self.timer_label.place(anchor="center",relx=0.5,rely=0.5)
         pywinstyles.set_opacity(self.timer_label, color="#a50c08")
 
@@ -310,7 +318,7 @@ class TimerPage:
         self.reset_button.place(relx=0.78, rely=0.38)
 
         self.tasks_button = Button(self.studi_frame, image=self.tasks_image_tk, command=self.clicked, cursor="hand2", bg="#a60c09", borderwidth=0, activebackground="#a60c09")
-        self.tasks_button.place(relx=0.78, rely=0.8)
+        self.tasks_button.place(relx=0.85, rely=0.86)
         pywinstyles.set_opacity(self.tasks_button, color="#a60c09")
 
         self.tasks_button.bind("<Enter>", self.tasks_on_enter)
@@ -318,12 +326,14 @@ class TimerPage:
 
     def tasks_on_enter(self, event):
         self.tasks_image = Image.open("Tasks_Hover.png")
-        self.tasks_image_tk = ImageTk.PhotoImage(self.tasks_image)
+        self.small_tasks_image = self.tasks_image.resize((240,108))
+        self.tasks_image_tk = ImageTk.PhotoImage(self.small_tasks_image)
         self.tasks_button.config(image=self.tasks_image_tk)
 
     def tasks_on_leave(self, event):
         self.tasks_image = Image.open("Tasks.png")
-        self.tasks_image_tk = ImageTk.PhotoImage(self.tasks_image)
+        self.small_tasks_image = self.tasks_image.resize((240,108))
+        self.tasks_image_tk = ImageTk.PhotoImage(self.small_tasks_image)
         self.tasks_button.config(image=self.tasks_image_tk)
 
     def start_timer(self):
