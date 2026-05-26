@@ -163,6 +163,9 @@ class TimerPage:
         self.settings_image = Image.open("Settings.png")
         self.settings_image_tk = ImageTk.PhotoImage(self.settings_image)
 
+        self.tasks_image = Image.open("Tasks.png")
+        self.tasks_image_tk = ImageTk.PhotoImage(self.tasks_image)
+
         self.exit_image = Image.open("Exit.png")
         self.exit_image_Tk = ImageTk.PhotoImage(self.exit_image)
 
@@ -255,43 +258,114 @@ class TimerPage:
             corner_radius=0,
             border_color="#9d0905",
             hover_color="#7D0502",
-            # command=self.pause_timer
+            command=self.pause_timer
         )
         self.pause_button.place(relx=0.54, rely=0.645)
 
-        self.timer_running = False
+        self.is_timer_running = False
+        self.is_paused = False
         self.end_time = 0
+        self.time_remaining = 0
 
-        self.minute_entry = Entry(self.studi_frame, text = "", font=('Gaco Strong Demo', 40))
-        self.minute_entry.place(relx = 0.34, rely = 0.6)
+        self.minute_entry = Entry(self.studi_frame, text = "", font=('Gaco Strong Demo', 20))
+        self.minute_entry.place(anchor="center",relx=0.475,rely=0.9)
 
-        self.timer_label = Label(self.studi_frame, text = "Enter Time in Seconds", font=('Gaco Strong Demo', 40),)
-        self.timer_label.place(relx = 0.32, rely = 0.45)
+        self.enter_button = customtkinter.CTkButton(
+            self.studi_frame,
+            text="Enter / Reset",
+            font=('Gaco Strong Demo', 20),
+            width=100,
+            height=40,
+            text_color="white",
+            fg_color="#870c09",
+            border_width=0,
+            border_spacing=10,
+            corner_radius=0,
+            border_color="#9d0905",
+            hover_color="#7D0502",
+            command=self.reset_timer
+        )
+        self.enter_button.place(relx=0.605, rely=0.88)
+
+        self.timer_label = Label(self.studi_frame, text = "00:00:00", font=('Gaco Strong Demo', 100), fg="white",bg="#a50c08")
+        self.timer_label.place(anchor="center",relx=0.5,rely=0.5)
+        pywinstyles.set_opacity(self.timer_label, color="#a50c08")
+
+        self.timer_status = Label(self.studi_frame, text = "", font=('Gaco Strong Demo', 25, "italic"), fg="white",bg="#a50c08")
+        self.timer_status.place(anchor="center",relx=0.5,rely=0.585)
+        pywinstyles.set_opacity(self.timer_status, color="#a50c08")
+
+        self.reset_button = customtkinter.CTkButton(
+            self.studi_frame,
+            text="↻",
+            font=('Gaco Strong Demo', 50),
+            text_color="white",
+            fg_color="#a30b08",
+            border_width=0,
+            border_spacing=10,
+            corner_radius=0,
+            border_color="#9d0905",
+            hover_color="#8c0603",
+            command=self.reset_timer)
+        self.reset_button.place(relx=0.78, rely=0.38)
+
+        self.tasks_button = Button(self.studi_frame, image=self.tasks_image_tk, command=self.clicked, cursor="hand2", bg="#a60c09", borderwidth=0, activebackground="#a60c09")
+        self.tasks_button.place(relx=0.78, rely=0.8)
+        pywinstyles.set_opacity(self.tasks_button, color="#a60c09")
+
+        self.tasks_button.bind("<Enter>", self.tasks_on_enter)
+        self.tasks_button.bind("<Leave>", self.tasks_on_leave)
+
+    def tasks_on_enter(self, event):
+        self.tasks_image = Image.open("Tasks_Hover.png")
+        self.tasks_image_tk = ImageTk.PhotoImage(self.tasks_image)
+        self.tasks_button.config(image=self.tasks_image_tk)
+
+    def tasks_on_leave(self, event):
+        self.tasks_image = Image.open("Tasks.png")
+        self.tasks_image_tk = ImageTk.PhotoImage(self.tasks_image)
+        self.tasks_button.config(image=self.tasks_image_tk)
 
     def start_timer(self):
-        if not self.timer_running:
-            try:
-                seconds = int(self.entry.get()) #CHANGE TO self.input.get() from settings later
-                if seconds <=0:
-                    raise ValueError("Please enter a +ve number greater than 0 ")
-                self.end_time = time.time() + seconds
-                self.timer_running = True
+        if not self.is_timer_running:
+            if self.is_paused:
+                self.is_timer_running = True
                 self.update_timer()
-            except ValueError as e:
-                print("error", str(e))
+                self.timer_status.config(text="Timer Running")
+            else:
+                self.time_remaining = int(self.minute_entry.get())*60
+                self.is_timer_running = True
+                self.timer_status.config(text="Timer Running")
+                self.update_timer()
+
+    def pause_timer(self):
+        self.is_timer_running = False
+        self.is_paused = True
+        self.timer_status.config(text="Timer Paused")
+
+    def reset_timer(self):
+        if any(char in "!@#$%^&*()-_=+`~[]{}|;:'\",<.>?/\\" for char in self.minute_entry.get()):
+            self.timer_status.config(text="Cannot have special characters, try again!")
+        elif self.minute_entry.get().strip() == "":
+         self.timer_status.config(text="Please enter a number, try again!")
+        else:
+            self.is_timer_running = False
+            self.time_remaining = int(self.minute_entry.get()) * 60
+            minutes, seconds = divmod(self.time_remaining, 60)
+            time_formatted = f"{minutes:02d}:{seconds:02d}"
+            self.timer_label.config(text=time_formatted)
+            self.timer_status.config(text="")
 
     def update_timer(self):
-        if self.timer_running:
-            remaining_time = int(self.end_time - time.time())
-            if remaining_time <= 0:
-                self.timer_running = False
-                self.timer_label = self.timer_label.configure(text="TIMES UP!")
-            else:
-                self.timer_label.configure(text=f"Time Remaining: {remaining_time} seconds")
-                self.studi_frame.after(1000,self.update_timer)
-
-
-
+        if self.time_remaining > 0 and self.is_timer_running:
+            minutes,seconds = divmod(self.time_remaining,60)
+            time_formatted = f"{minutes:02d}:{seconds:02d}"
+            self.timer_label.config(text=time_formatted)
+            self.time_remaining -= 1
+            self.studi_frame.after(1000,self.update_timer)
+        elif self.is_timer_running:
+            self.timer_label.config(text="00:00")
+            self.timer_status.config(text="Timer Finished!")
 
     def clicked(self):
             click_sound.play()
