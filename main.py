@@ -15,6 +15,11 @@ pyglet.options['win32_gdi_font'] = True
 
 pyglet.font.add_file("Bernoru.ttf")
 pyglet.font.add_file("Gaco_Strong_Font_Demo.otf")
+pyglet.font.add_file("etna-free-font.otf")
+pyglet.font.add_file("Mouser.ttf")
+pyglet.font.add_file("AltoneTrial-Bold.ttf")
+pyglet.font.add_file("ViceCitySans.otf")
+
 
 
 class MenuPage:
@@ -271,7 +276,7 @@ class TimerPage:
 
         self.minute_entry = customtkinter.CTkEntry(
             self.studi_frame,
-            font=('Gaco Strong Demo', 20),
+            font=('Mouser', 25),
             placeholder_text = "Enter Time in Minutes",
             width = 480,
             height = 50,
@@ -281,9 +286,9 @@ class TimerPage:
         self.enter_button = customtkinter.CTkButton(
             self.studi_frame,
             text="Enter / Reset",
-            font=('Gaco Strong Demo', 20),
-            width=100,
-            height=40,
+            font=('Altone Trial', 30),
+            width=220,
+            height=50,
             text_color="white",
             fg_color="#870c09",
             border_width=0,
@@ -293,15 +298,14 @@ class TimerPage:
             hover_color="#7D0502",
             command=self.reset_timer
         )
-        self.enter_button.place(relx=0.605, rely=0.88)
+        self.enter_button.place(relx=0.605, rely=0.876)
 
         self.timer_label = Label(self.studi_frame, text = "00:00:00", font=('Gaco Strong Demo', 125), fg="white",bg="#a50c08")
         self.timer_label.place(anchor="center",relx=0.5,rely=0.5)
         pywinstyles.set_opacity(self.timer_label, color="#a50c08")
 
-        self.timer_status = Label(self.studi_frame, text = "", font=('Gaco Strong Demo', 25, "italic"), fg="white",bg="#a50c08")
+        self.timer_status = customtkinter.CTkLabel(self.studi_frame, text = "Test", font=('Altone Trial', 50), text_color="white",fg_color="#a60c09")
         self.timer_status.place(anchor="center",relx=0.5,rely=0.585)
-        pywinstyles.set_opacity(self.timer_status, color="#a50c08")
 
         self.reset_button = customtkinter.CTkButton(
             self.studi_frame,
@@ -341,30 +345,30 @@ class TimerPage:
             if self.is_paused:
                 self.is_timer_running = True
                 self.update_timer()
-                self.timer_status.config(text="Timer Running")
+                self.timer_status.configure(text="Timer Running")
             else:
                 self.time_remaining = int(self.minute_entry.get())*60
                 self.is_timer_running = True
-                self.timer_status.config(text="Timer Running")
+                self.timer_status.configure(text="Timer Running")
                 self.update_timer()
 
     def pause_timer(self):
         self.is_timer_running = False
         self.is_paused = True
-        self.timer_status.config(text="Timer Paused")
+        self.timer_status.configure(text="Timer Paused")
 
     def reset_timer(self):
         if any(char in "!@#$%^&*()-_=+`~[]{}|;:'\",<.>?/\\" for char in self.minute_entry.get()):
-            self.timer_status.config(text="Cannot have special characters, try again!")
+            self.timer_status.configure(text="Cannot have special characters, try again!")
         elif self.minute_entry.get().strip() == "":
-         self.timer_status.config(text="Please enter a number, try again!")
+         self.timer_status.configure(text="Please enter a number, try again!")
         else:
             self.is_timer_running = False
             self.time_remaining = int(self.minute_entry.get()) * 60
             minutes, seconds = divmod(self.time_remaining, 60)
             time_formatted = f"{minutes:02d}:{seconds:02d}"
             self.timer_label.config(text=time_formatted)
-            self.timer_status.config(text="")
+            self.timer_status.configure(text="")
 
     def update_timer(self):
         if self.time_remaining > 0 and self.is_timer_running:
@@ -375,7 +379,9 @@ class TimerPage:
             self.studi_frame.after(1000,self.update_timer)
         elif self.is_timer_running:
             self.timer_label.config(text="00:00")
-            self.timer_status.config(text="Timer Finished!")
+            self.timer_status.configure(text="Timer Finished!")
+            self.studi_frame.after(1000,self.update_timer)
+
 
     def clicked(self):
             click_sound.play()
