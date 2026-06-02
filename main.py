@@ -56,7 +56,7 @@ class MenuPage:
         self.timer_button.place(relx = 0.27, rely= 0.44)
         pywinstyles.set_opacity(self.timer_button, color="#a60c09")
 
-        self.tasks_button = Button(self.studi_frame, image = self.tasks_image_tk, command = self.clicked, cursor = "hand2", bg="#a60c09", borderwidth=0, activebackground="#a60c09")
+        self.tasks_button = Button(self.studi_frame, image = self.tasks_image_tk, command = self.openTasks, cursor = "hand2", bg="#a60c09", borderwidth=0, activebackground="#a60c09")
         self.tasks_button.place(relx = 0.53, rely= 0.44)
         pywinstyles.set_opacity(self.tasks_button, color="#a60c09")
 
@@ -87,10 +87,8 @@ class MenuPage:
         self.exit_button.bind("<Enter>", self.exit_on_enter)
         self.exit_button.bind("<Leave>", self.exit_on_leave)
 
-
     def clicked(self):
-        click_sound.play()
-
+        pass
 
     def exit_program(self):
         self.studi_frame.destroy()
@@ -146,6 +144,10 @@ class MenuPage:
         self.studi_frame.destroy()
         TimerPage(root)
 
+    def openTasks(self):
+        click_sound.play()
+        self.studi_frame.destroy()
+        TasksPage(root)
 
 class TimerPage:
     def __init__(self,parent):
@@ -304,8 +306,9 @@ class TimerPage:
         self.timer_label.place(anchor="center",relx=0.5,rely=0.5)
         pywinstyles.set_opacity(self.timer_label, color="#a50c08")
 
-        self.timer_status = customtkinter.CTkLabel(self.studi_frame, text = "Test", font=('Altone Trial', 50), text_color="white",fg_color="#a60c09")
+        self.timer_status = customtkinter.CTkLabel(self.studi_frame, text = "", font=('Altone Trial', 50), text_color="white",fg_color="#a60c09")
         self.timer_status.place(anchor="center",relx=0.5,rely=0.585)
+        pywinstyles.set_opacity(self.timer_status, color="#a60c09")
 
         self.reset_button = customtkinter.CTkButton(
             self.studi_frame,
@@ -321,24 +324,15 @@ class TimerPage:
             command=self.reset_timer)
         self.reset_button.place(relx=0.78, rely=0.38)
 
-        self.tasks_button = Button(self.studi_frame, image=self.tasks_image_tk, command=self.clicked, cursor="hand2", bg="#a60c09", borderwidth=0, activebackground="#a60c09")
+        self.tasks_button = Button(self.studi_frame, image=self.tasks_image_tk, command=self.openTasks, cursor="hand2", bg="#a60c09", borderwidth=0, activebackground="#a60c09")
         self.tasks_button.place(relx=0.85, rely=0.86)
         pywinstyles.set_opacity(self.tasks_button, color="#a60c09")
 
         self.tasks_button.bind("<Enter>", self.tasks_on_enter)
         self.tasks_button.bind("<Leave>", self.tasks_on_leave)
 
-    def tasks_on_enter(self, event):
-        self.tasks_image = Image.open("Tasks_Hover.png")
-        self.small_tasks_image = self.tasks_image.resize((240,108))
-        self.tasks_image_tk = ImageTk.PhotoImage(self.small_tasks_image)
-        self.tasks_button.config(image=self.tasks_image_tk)
 
-    def tasks_on_leave(self, event):
-        self.tasks_image = Image.open("Tasks.png")
-        self.small_tasks_image = self.tasks_image.resize((240,108))
-        self.tasks_image_tk = ImageTk.PhotoImage(self.small_tasks_image)
-        self.tasks_button.config(image=self.tasks_image_tk)
+
 
     def start_timer(self):
         if not self.is_timer_running:
@@ -362,6 +356,8 @@ class TimerPage:
             self.timer_status.configure(text="Cannot have special characters, try again!")
         elif self.minute_entry.get().strip() == "":
          self.timer_status.configure(text="Please enter a number, try again!")
+        elif any(char in "abcdefghijklmnopqrstuvwxyz" for char in self.minute_entry.get()):
+            self.timer_status.configure(text="Cannot have letters, try again!")
         else:
             self.is_timer_running = False
             self.time_remaining = int(self.minute_entry.get()) * 60
@@ -382,9 +378,117 @@ class TimerPage:
             self.timer_status.configure(text="Timer Finished!")
             self.studi_frame.after(1000,self.update_timer)
 
+    def user_on_enter(self, event):
+        self.user_image = Image.open("User_Hover.png")
+        self.user_image_tk = ImageTk.PhotoImage(self.user_image)
+        self.user_button.config(image=self.user_image_tk)
+    def user_on_leave(self, event):
+        self.user_image = Image.open("User.png")
+        self.user_image_tk = ImageTk.PhotoImage(self.user_image)
+        self.user_button.config(image=self.user_image_tk)
+
+    def settings_on_enter(self, event):
+        self.settings_image = Image.open("Settings_Hover.png")
+        self.settings_image_tk = ImageTk.PhotoImage(self.settings_image)
+        self.settings_button.config(image=self.settings_image_tk)
+    def settings_on_leave(self, event):
+        self.settings_image = Image.open("Settings.png")
+        self.settings_image_tk = ImageTk.PhotoImage(self.settings_image)
+        self.settings_button.config(image=self.settings_image_tk)
+
+    def exit_on_enter(self, event):
+        self.exit_image = Image.open("Exit_Hover.png")
+        self.exit_image_tk = ImageTk.PhotoImage(self.exit_image)
+        self.exit_button.config(image=self.exit_image_tk)
+    def exit_on_leave(self, event):
+        self.exit_image = Image.open("Exit.png")
+        self.exit_image_tk = ImageTk.PhotoImage(self.exit_image)
+        self.exit_button.config(image=self.exit_image_tk)
+
+    def tasks_on_enter(self, event):
+        self.tasks_image = Image.open("Tasks_Hover.png")
+        self.small_tasks_image = self.tasks_image.resize((240,108))
+        self.tasks_image_tk = ImageTk.PhotoImage(self.small_tasks_image)
+        self.tasks_button.config(image=self.tasks_image_tk)
+    def tasks_on_leave(self, event):
+        self.tasks_image = Image.open("Tasks.png")
+        self.small_tasks_image = self.tasks_image.resize((240,108))
+        self.tasks_image_tk = ImageTk.PhotoImage(self.small_tasks_image)
+        self.tasks_button.config(image=self.tasks_image_tk)
+
+    def openTasks(self):
+        click_sound.play()
+        self.studi_frame.destroy()
+        TasksPage(root)
+
+    def clicked(self):
+        click_sound.play()
+
+    def exit_program(self):
+        self.studi_frame.destroy()
+        exit()
+
+class TasksPage:
+    def __init__(self,parent):
+        self.window_width = parent.winfo_screenwidth()
+        self.window_height = parent.winfo_screenheight()
+
+        self.background_image = Image.open("Tasks_Page.png")
+        self.background_image = self.background_image.resize((self.window_width, self.window_height), Image.LANCZOS)
+        self.background_image_tk = ImageTk.PhotoImage(self.background_image)
+
+        self.studi_frame = Frame(parent)
+        self.studi_frame.pack(fill=BOTH, expand=TRUE)
+
+        self.image_label = Label(self.studi_frame, image=self.background_image_tk,
+                                 borderwidth=0)  # Creates a label, which holds the background image
+        self.image_label.place(relwidth=1, relheight=1)  # Ensures that the label/image fits the entire screen
+
+        self.user_image = Image.open("User.png")
+        self.user_image_tk = ImageTk.PhotoImage(self.user_image)
+
+        self.settings_image = Image.open("Settings.png")
+        self.settings_image_tk = ImageTk.PhotoImage(self.settings_image)
+
+        self.timer_image = Image.open("Timer.png")
+        self.small_timer_image = self.timer_image.resize((240,108))
+        self.timer_image_tk = ImageTk.PhotoImage(self.small_timer_image)
+
+        self.exit_image = Image.open("Exit.png")
+        self.exit_image_Tk = ImageTk.PhotoImage(self.exit_image)
+
+        self.user_button = Button(self.studi_frame, image=self.user_image_tk, command=self.clicked, cursor="hand2",
+                                  bg="#8d0401", borderwidth=0, activebackground="#8d0401")
+        self.user_button.place(relx=0.85, rely=0.022)
+        self.user_button.bind("<Enter>", self.user_on_enter)
+        self.user_button.bind("<Leave>", self.user_on_leave)
+
+        self.settings_button = Button(self.studi_frame, image=self.settings_image_tk, command=self.clicked,
+                                      cursor="hand2", bg="#8d0401", borderwidth=0, activebackground="#8d0401")
+        self.settings_button.place(relx=0.9, rely=0.022)
+        self.settings_button.bind("<Enter>", self.settings_on_enter)
+        self.settings_button.bind("<Leave>", self.settings_on_leave)
+
+        self.exit_button = Button(self.studi_frame, image=self.exit_image_Tk, command=self.exit_program, cursor="hand2",
+                                  bg="#8d0401", borderwidth=0, activebackground="#8d0401")
+        self.exit_button.place(relx=0.95, rely=0.027)
+        self.exit_button.bind("<Enter>", self.exit_on_enter)
+        self.exit_button.bind("<Leave>", self.exit_on_leave)
+
+        self.timer_button = Button(self.studi_frame, image=self.timer_image_tk, command=self.openTimer, bg="#a60c09", activebackground="#a60c09", cursor="hand2", borderwidth=0, )
+        self.timer_button.place(relx=0.85, rely=0.86)
+        pywinstyles.set_opacity(self.timer_button, color="#a60c09")
+        self.timer_button.bind("<Enter>", self.timer_on_enter)
+        self.timer_button.bind("<Leave>", self.timer_on_leave)
+
 
     def clicked(self):
             click_sound.play()
+
+    def openTimer(self):
+        click_sound.play()
+        self.studi_frame.destroy()
+        TimerPage(root)
 
     def exit_program(self):
             self.studi_frame.destroy()
@@ -416,6 +520,17 @@ class TimerPage:
         self.exit_image = Image.open("Exit.png")
         self.exit_image_tk = ImageTk.PhotoImage(self.exit_image)
         self.exit_button.config(image=self.exit_image_tk)
+
+    def timer_on_enter(self, event):
+        self.timer_image = Image.open("Timer_Hover.png")
+        self.small_timer_image = self.timer_image.resize((240, 108))
+        self.timer_image_tk = ImageTk.PhotoImage(self.small_timer_image)
+        self.timer_button.config(image=self.timer_image_tk)
+    def timer_on_leave(self, event):
+        self.timer_image = Image.open("Timer.png")
+        self.small_timer_image = self.timer_image.resize((240, 108))
+        self.timer_image_tk = ImageTk.PhotoImage(self.small_timer_image)
+        self.timer_button.config(image=self.timer_image_tk)
 
 
 #Runs the program
