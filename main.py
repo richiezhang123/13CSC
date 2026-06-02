@@ -481,6 +481,70 @@ class TasksPage:
         self.timer_button.bind("<Enter>", self.timer_on_enter)
         self.timer_button.bind("<Leave>", self.timer_on_leave)
 
+        self.subject_1 = customtkinter.CTkButton(
+            self.studi_frame,
+            text="placeholder1}",
+            font=('Altone Trial', 40),
+            height = 100,
+            width = 100,
+            text_color="black",
+            fg_color="#dbdbdb",
+            corner_radius=50,
+            bg_color = "red"
+            )
+        self.subject_1.place(relx=0.05,rely=0.185)
+
+        self.subject_2 = customtkinter.CTkButton(
+            self.studi_frame,
+            text="placeholder1}",
+            font=('Altone Trial', 40),
+            height = 100,
+            width = 100,
+            text_color="black",
+            fg_color="#dbdbdb",
+            corner_radius=50,
+            bg_color = "red"
+            )
+        self.subject_2.place(relx=0.05,rely=0.345)
+
+        self.subject_3 = customtkinter.CTkButton(
+            self.studi_frame,
+            text="placeholder1}",
+            font=('Altone Trial', 40),
+            height = 100,
+            width = 100,
+            text_color="black",
+            fg_color="#dbdbdb",
+            corner_radius=50,
+            bg_color = "red"
+            )
+        self.subject_3.place(relx=0.05,rely=0.505   )
+
+        self.subject_4 = customtkinter.CTkButton(
+            self.studi_frame,
+            text="placeholder1}",
+            font=('Altone Trial', 40),
+            height = 100,
+            width = 100,
+            text_color="black",
+            fg_color="#dbdbdb",
+            corner_radius=50,
+            bg_color = "red"
+            )
+        self.subject_4.place(relx=0.05,rely=0.665)
+
+        self.subject_5 = customtkinter.CTkButton(
+            self.studi_frame,
+            text="placeholder1}",
+            font=('Altone Trial', 40),
+            height = 100,
+            width = 100,
+            text_color="black",
+            fg_color="#dbdbdb",
+            corner_radius=50,
+            bg_color = "red"
+            )
+        self.subject_5.place(relx=0.05,rely=0.825)
 
     def clicked(self):
             click_sound.play()
