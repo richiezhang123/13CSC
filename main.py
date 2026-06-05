@@ -17,6 +17,8 @@ pyglet.font.add_file("Gaco_Strong_Font_Demo.otf")
 pyglet.font.add_file("Nexa.ttf")
 pyglet.font.add_file("AltoneTrial-Bold.ttf")
 pyglet.font.add_file("Mont Heavy.otf")
+pyglet.font.add_file("Etna.otf")
+
 
 class MenuPage:
     def __init__(self,parent):
@@ -383,10 +385,10 @@ class TimerPage:
             self.timer_label.config(text=time_formatted)
             self.time_remaining -= 1
             self.studi_frame.after(1000,self.update_timer)
+            print("HI!!")
         elif self.is_timer_running:
             self.timer_label.config(text="00:00")
             self.timer_status.configure(text="Timer Finished!")
-            self.studi_frame.after(1000,self.update_timer)
 
     def user_on_enter(self, event):
         self.user_image = Image.open("User_Hover.png")
@@ -500,9 +502,10 @@ class TasksPage:
             text_color="black",
             fg_color="#dbdbdb",
             corner_radius=50,
-            bg_color = "#a60c09"
+            bg_color = "#a60c09",
+            hover_color = "#c2c0c0"
             )
-        self.subject_1.place(relx=0.05,rely=0.185)
+        self.subject_1.place(relx=0.03,rely=0.185)
         pywinstyles.set_opacity(self.subject_1, color="#a60c09")
 
         self.subject_2 = customtkinter.CTkButton(
@@ -514,9 +517,9 @@ class TasksPage:
             text_color="black",
             fg_color="#dbdbdb",
             corner_radius=50,
-            bg_color = "#a60c09"
-            )
-        self.subject_2.place(relx=0.05,rely=0.345)
+            bg_color = "#a60c09",
+            hover_color="#c2c0c0")
+        self.subject_2.place(relx=0.03,rely=0.345)
         pywinstyles.set_opacity(self.subject_2, color="#a60c09")
 
         self.subject_3 = customtkinter.CTkButton(
@@ -528,9 +531,9 @@ class TasksPage:
             text_color="black",
             fg_color="#dbdbdb",
             corner_radius=50,
-            bg_color = "#a60c09"
-            )
-        self.subject_3.place(relx=0.05,rely=0.505)
+            bg_color = "#a60c09",
+            hover_color="#c2c0c0")
+        self.subject_3.place(relx=0.03,rely=0.505)
         pywinstyles.set_opacity(self.subject_3, color="#a60c09")
 
         self.subject_4 = customtkinter.CTkButton(
@@ -542,9 +545,9 @@ class TasksPage:
             text_color="black",
             fg_color="#dbdbdb",
             corner_radius=50,
-            bg_color = "#a60c09"
-            )
-        self.subject_4.place(relx=0.05,rely=0.665)
+            bg_color = "#a60c09",
+            hover_color="#c2c0c0")
+        self.subject_4.place(relx=0.03,rely=0.665)
         pywinstyles.set_opacity(self.subject_4, color="#a60c09")
 
         self.subject_5 = customtkinter.CTkButton(
@@ -556,10 +559,38 @@ class TasksPage:
             text_color="black",
             fg_color="#dbdbdb",
             corner_radius=50,
-            bg_color = "#a60c09"
-            )
-        self.subject_5.place(relx=0.05,rely=0.825)
+            bg_color = "#a60c09",
+            hover_color="#c2c0c0")
+        self.subject_5.place(relx=0.03,rely=0.825)
         pywinstyles.set_opacity(self.subject_5, color="#a60c09")
+
+        self.enter_tasks = customtkinter.CTkEntry(
+            self.studi_frame,
+            placeholder_text="Enter Your Task",
+            font=('Mont Heavy DEMO', 30),
+            width=450,
+            height=30,
+            text_color="black",
+            fg_color="#dbdbdb",
+        )
+        self.enter_tasks.place(relx=0.46,rely=0.74)
+
+        self.play_button = customtkinter.CTkButton(
+            self.studi_frame,
+            text="✔",
+            font=('Gaco Strong Demo', 115),
+            width=30,
+            height=30,
+            text_color="white",
+            fg_color="#870c09",
+            border_width=0,
+            border_spacing=10,
+            corner_radius=0,
+            border_color="#9d0905",
+            hover_color="#7D0502",
+            )
+        self.play_button.place(relx=0.4, rely=0.6327)
+
 
     def clicked(self):
             click_sound.play()
