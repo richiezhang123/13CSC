@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter.font import Font
 from PIL import Image, ImageTk
 import customtkinter
 import pywinstyles
@@ -7,9 +8,9 @@ import pygame
 import pyglet
 import time
 
-
 pygame.mixer.init()
 click_sound = pygame.mixer.Sound("mouse_click.mp3")
+
 
 pyglet.options['win32_gdi_font'] = True
 
@@ -19,6 +20,7 @@ pyglet.font.add_file("AltoneTrial-Bold.ttf")
 pyglet.font.add_file("Mont Heavy.otf")
 pyglet.font.add_file("Etna.otf")
 
+# tasks_font = Font(family="Mont Heavy DEMO", size = 35)
 
 class MenuPage:
     def __init__(self,parent):
@@ -271,11 +273,6 @@ class TimerPage:
         )
         self.pause_button.place(relx=0.54, rely=0.645)
 
-        self.is_timer_running = False
-        self.is_paused = False
-        self.end_time = 0
-        self.time_remaining = 0
-
         self.minute_entry = customtkinter.CTkEntry(
             self.studi_frame,
             font=('Mont Heavy DEMO', 25),
@@ -332,7 +329,11 @@ class TimerPage:
         self.tasks_button.bind("<Leave>", self.tasks_on_leave)
 
 
-
+        self.is_timer_running = False
+        self.is_paused = False
+        self.end_time = 0
+        self.time_remaining = 0
+        
 
     def start_timer(self):
         if not self.is_timer_running:
@@ -575,22 +576,56 @@ class TasksPage:
         )
         self.enter_tasks.place(relx=0.46,rely=0.74)
 
-        self.play_button = customtkinter.CTkButton(
+        self.submit_button = customtkinter.CTkButton(
             self.studi_frame,
-            text="✔",
-            font=('Gaco Strong Demo', 115),
-            width=30,
-            height=30,
-            text_color="white",
-            fg_color="#870c09",
-            border_width=0,
-            border_spacing=10,
+            text="+",
+            font=('Mont Heavy DEMO', 50),
+            text_color="black",
+            fg_color="#edebf2",
+            width = -50,
+            height = -20,
             corner_radius=0,
             border_color="#9d0905",
-            hover_color="#7D0502",
+            hover_color="#b3b2b6",
+            command = self.collect_task
             )
-        self.play_button.place(relx=0.4, rely=0.6327)
+        self.submit_button.place(relx=0.7, rely=0.728)
 
+        self.edit_button = customtkinter.CTkButton(
+            self.studi_frame,
+            text="🖍",
+            font=('Gaco Strong Demo', 50),
+            text_color="black",
+            fg_color="#edebf2",
+            width = -50,
+            height = -20,
+            corner_radius=0,
+            border_color="#9d0905",
+            hover_color="#b3b2b6",
+            )
+        self.edit_button.place(relx=0.42, rely=0.725)
+
+        self.tasks_list=Listbox(
+            self.studi_frame,
+            font = ("Mont Heavy DEMO",22),
+            width = 50,
+            bg = "#edebf2",
+            bd=0,
+            highlightthickness= 0,
+            selectbackground= "#8e8d8f",
+            activestyle="none"
+        )
+        self.tasks_list.place(anchor="center", relx=0.52, rely=0.42)
+
+        self.list = ["Finish Homework","Do project","Sleep","test123","piwpokpokapowdk"]
+        for item in self.list:
+            self.tasks_list.insert(END,item)
+
+        self.tasks_scrollbar = Scrollbar(self.studi_frame)
+        self.tasks_scrollbar.place(relx=0.8,rely=0.42)
+
+    def collect_task(self):
+        print(self.enter_tasks.get())
 
     def clicked(self):
             click_sound.play()
