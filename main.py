@@ -603,61 +603,65 @@ class TasksPage:
             self.studi_frame,
             text="ADD +",
             font=('Gaco Strong Demo', 30),
-            text_color="black",
-            fg_color="#edebf2",
+            text_color="white",
+            fg_color="#bb5fc9",
             width=-50,
             height=-20,
             corner_radius=0,
+            border_spacing=6,
             border_color="#9d0905",
-            hover_color="#b3b2b6",
+            hover_color="#8d4b96",
             command=self.add_task
         )
-        self.add_button.place(relx=0.7, rely=0.742)
+        self.add_button.place(relx=0.698, rely=0.739)
 
         self.edit_button = customtkinter.CTkButton(
             self.studi_frame,
             text="EDIT 🖍",
             font=('Gaco Strong Demo', 30),
-            text_color="black",
-            fg_color="#edebf2",
+            text_color="white",
+            fg_color="#d18c02",
             width=-50,
             height=-20,
             corner_radius=0,
+            border_spacing=6,
             border_color="#9d0905",
-            hover_color="#b3b2b6",
+            hover_color="#ad7402",
             command=self.edit_task
         )
-        self.edit_button.place(relx=0.77, rely=0.742)
+        self.edit_button.place(relx=0.767, rely=0.739)
 
         self.delete_button = customtkinter.CTkButton(
             self.studi_frame,
             text="DELETE 🗑",
             font=('Gaco Strong Demo', 30),
-            text_color="black",
-            fg_color="#edebf2",
+            text_color="white",
+            fg_color="#c9242d",
             width=-50,
             height=-20,
-            corner_radius=0,
+            corner_radius=10,
+            border_spacing=6,
             border_color="#9d0905",
-            hover_color="#b3b2b6",
+            hover_color="#a81e26",
             command=self.delete_task
         )
-        self.delete_button.place(relx=0.355, rely=0.742)
+        self.delete_button.place(relx=0.355, rely=0.74)
 
-        self.cross_button = customtkinter.CTkButton(
+        self.complete_button = customtkinter.CTkButton(
             self.studi_frame,
             text="COMPLETE ✔",
             font=('Gaco Strong Demo', 30),
-            text_color="black",
-            fg_color="#edebf2",
+            text_color="white",
+            fg_color="#378714",
             width=-50,
             height=-20,
-            corner_radius=0,
+            corner_radius=50,
+            border_spacing=6,
             border_color="#9d0905",
-            hover_color="#b3b2b6",
-            command=self.cross_task
+            hover_color="#2c6b10",
+            command=self.complete_task
         )
-        self.cross_button.place(relx=0.515, rely=0.695)
+        self.complete_button.place(relx=0.5, rely=0.69)
 
         self.tasks_list = Listbox(
             self.studi_frame,
@@ -683,7 +687,7 @@ class TasksPage:
         )
         self.tasks_list.place(anchor="center", relx=0.52, rely=0.42)
 
-        self.list = ["Finish Homework", "Do project", "Sleep", "test123", "piwpokpokapowdk"]
+        self.list = ["Finish Homework", "Do project", "Sleep", "test123", "hi hello"]
         for item in self.list:
             self.tasks_list.insert(END, item)
 
@@ -694,15 +698,16 @@ class TasksPage:
         self.tasks_scrollbar.config(command=self.tasks_list.yview)
 
     def add_task(self):
-        print(self.enter_tasks.get())
+        self.tasks_list.insert(END,self.enter_tasks.get())
+        self.enter_tasks.delete(0,END)
 
     def edit_task(self):
         print(self.enter_tasks.get())
 
     def delete_task(self):
-        print(self.enter_tasks.get())
+        self.tasks_list.delete(ANCHOR)
 
-    def cross_task(self):
+    def complete_task(self):
         print(self.enter_tasks.get())
 
     def clicked(self):
