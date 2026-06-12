@@ -702,13 +702,19 @@ class TasksPage:
         self.enter_tasks.delete(0,END)
 
     def edit_task(self):
-        print(self.enter_tasks.get())
+        # self.tasks_list.itemconfig(
+        #     self.tasks_list.curselection(),text=self.enter_tasks.get()
+        # )
+        self.tasks_list.selection_clear(0,END)
 
     def delete_task(self):
         self.tasks_list.delete(ANCHOR)
 
     def complete_task(self):
-        print(self.enter_tasks.get())
+        self.tasks_list.itemconfig(
+            self.tasks_list.curselection(),fg="#dedede"
+        )
+        self.tasks_list.selection_clear(0,END)
 
     def clicked(self):
         # click_sound.play()
