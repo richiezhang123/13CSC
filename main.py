@@ -5,7 +5,12 @@ import customtkinter
 import pywinstyles
 # import pygame
 import pyglet
-import time
+from tkinter import filedialog
+import pickle
+import os
+
+cwd = os.getcwd()
+
 
 # pygame.mixer.init()
 # click_sound = pygame.mixer.Sound("mouse_click.mp3")
@@ -597,23 +602,23 @@ class TasksPage:
             text_color="black",
             fg_color="#dbdbdb",
         )
-        self.enter_tasks.place(relx=0.46, rely=0.74)
+        self.enter_tasks.place(relx=0.28, rely=0.74)
 
         self.add_button = customtkinter.CTkButton(
             self.studi_frame,
             text="ADD +",
             font=('Gaco Strong Demo', 30),
             text_color="white",
-            fg_color="#bb5fc9",
+            fg_color="#378714",
             width=-50,
             height=-20,
             corner_radius=0,
             border_spacing=6,
             border_color="#9d0905",
-            hover_color="#8d4b96",
+            hover_color="#2c6b10",
             command=self.add_task
         )
-        self.add_button.place(relx=0.698, rely=0.739)
+        self.add_button.place(relx=0.518, rely=0.739)
 
         self.edit_button = customtkinter.CTkButton(
             self.studi_frame,
@@ -629,7 +634,7 @@ class TasksPage:
             hover_color="#ad7402",
             command=self.edit_task
         )
-        self.edit_button.place(relx=0.767, rely=0.739)
+        self.edit_button.place(relx=0.695, rely=0.739)
 
         self.delete_button = customtkinter.CTkButton(
             self.studi_frame,
@@ -645,23 +650,23 @@ class TasksPage:
             hover_color="#a81e26",
             command=self.delete_task
         )
-        self.delete_button.place(relx=0.355, rely=0.74)
+        self.delete_button.place(relx=0.587, rely=0.739)
 
         self.complete_button = customtkinter.CTkButton(
             self.studi_frame,
             text="COMPLETE ✔",
             font=('Gaco Strong Demo', 30),
             text_color="white",
-            fg_color="#378714",
+            fg_color="#5192d6",
             width=-50,
             height=-20,
             corner_radius=50,
             border_spacing=6,
             border_color="#9d0905",
-            hover_color="#2c6b10",
+            hover_color="#346291",
             command=self.complete_task
         )
-        self.complete_button.place(relx=0.5, rely=0.69)
+        self.complete_button.place(relx=0.775, rely=0.739)
 
         self.tasks_list = Listbox(
             self.studi_frame,
@@ -692,20 +697,53 @@ class TasksPage:
             self.tasks_list.insert(END, item)
 
         self.tasks_scrollbar = Scrollbar(self.studi_frame)
-        self.tasks_scrollbar.place(relx=0.9, rely=0.24, relheight=0.5)
+        self.tasks_scrollbar.place(relx=0.9, rely=0.225, relheight=0.5)
 
         self.tasks_list.config(yscrollcommand=self.tasks_scrollbar)
         self.tasks_scrollbar.config(command=self.tasks_list.yview)
 
+        self.save_button = customtkinter.CTkButton(
+            self.studi_frame,
+            text="SAVE",
+            font=('Gaco Strong Demo', 30),
+            text_color="white",
+            fg_color="#cf7908",
+            width=-40,
+            height=-20,
+            border_spacing=6,
+            border_width=-1,
+            hover_color="#9c5b06",
+            command=self.save_list
+        )
+        self.save_button.place(relx=0.01, rely=0.01)
+
+        self.open_button = customtkinter.CTkButton(
+            self.studi_frame,
+            text="OPEN",
+            font=('Gaco Strong Demo', 30),
+            text_color="white",
+            fg_color="#376dab",
+            width=-40,
+            height=-20,
+            border_spacing=6,
+            border_width=-1,
+            hover_color="#23466e",
+            command=self.open_list
+        )
+        self.open_button.place(relx=0.08, rely=0.01)
+
     def add_task(self):
-        self.tasks_list.insert(END,self.enter_tasks.get())
-        self.enter_tasks.delete(0,END)
+        task = self.enter_tasks.get()
+        if task.strip() == "":
+            pass
+        else:
+            self.tasks_list.insert(END,task)
+            self.enter_tasks.delete(0,END)
 
     def edit_task(self):
-        # self.tasks_list.itemconfig(
-        #     self.tasks_list.curselection(),text=self.enter_tasks.get()
-        # )
-        self.tasks_list.selection_clear(0,END)
+        for item in self.tasks_list.curselection():
+            self.tasks_list.delete(item)
+            self.tasks_list.insert(item,self.enter_tasks.get())
 
     def delete_task(self):
         self.tasks_list.delete(ANCHOR)
@@ -715,6 +753,27 @@ class TasksPage:
             self.tasks_list.curselection(),fg="#dedede"
         )
         self.tasks_list.selection_clear(0,END)
+
+    def save_list(self):
+        file_name = filedialog.asksaveasfilename(
+            initialdir=cwd,
+            title = "Save File",
+            filetypes = (("Dat files", "*.dat"),
+                         ("All files", "*.*"))
+        )
+
+        if file_name:
+            if file_name.endswith(".dat"):
+                pass
+            else:
+                file_name=f'{file_name}.dat'
+
+        stuff = self.tasks_list.get(0,END)
+        output_file = open(file_name, 'wb')
+        pickle.dump(stuff,output_file)
+
+    def open_list(self):
+        pass
 
     def clicked(self):
         # click_sound.play()
