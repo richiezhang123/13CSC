@@ -524,7 +524,7 @@ class TasksPage:
 
         self.subject_1 = customtkinter.CTkButton(
             self.studi_frame,
-            text="placeholder 1",
+            text="English",
             font=('Mont Heavy DEMO', 40),
             height=100,
             width=100,
@@ -539,7 +539,7 @@ class TasksPage:
 
         self.subject_2 = customtkinter.CTkButton(
             self.studi_frame,
-            text="placeholder 2",
+            text="CSC",
             font=('Mont Heavy DEMO', 40),
             height=100,
             width=100,
@@ -553,7 +553,7 @@ class TasksPage:
 
         self.subject_3 = customtkinter.CTkButton(
             self.studi_frame,
-            text="placeholder 3",
+            text="Economics",
             font=('Mont Heavy DEMO', 40),
             height=100,
             width=100,
@@ -567,7 +567,7 @@ class TasksPage:
 
         self.subject_4 = customtkinter.CTkButton(
             self.studi_frame,
-            text="placeholder 4",
+            text="Statistics",
             font=('Mont Heavy DEMO', 40),
             height=100,
             width=100,
@@ -581,7 +581,7 @@ class TasksPage:
 
         self.subject_5 = customtkinter.CTkButton(
             self.studi_frame,
-            text="placeholder 5",
+            text="Classics",
             font=('Mont Heavy DEMO', 40),
             height=100,
             width=100,
@@ -692,9 +692,9 @@ class TasksPage:
         )
         self.tasks_list.place(anchor="center", relx=0.52, rely=0.42)
 
-        self.list = ["Finish Homework", "Do project", "Sleep", "test123", "hi hello"]
-        for item in self.list:
-            self.tasks_list.insert(END, item)
+        # self.list = ["Finish Homework", "Do project", "Sleep", "test123", "hi hello"]
+        # for item in self.list:
+        #     self.tasks_list.insert(END, item)
 
         self.tasks_scrollbar = Scrollbar(self.studi_frame)
         self.tasks_scrollbar.place(relx=0.9, rely=0.225, relheight=0.5)
@@ -758,8 +758,8 @@ class TasksPage:
         file_name = filedialog.asksaveasfilename(
             initialdir=cwd,
             title = "Save File",
-            filetypes = (("Dat files", "*.dat"),
-                         ("All files", "*.*"))
+            filetypes = (("Dat Files", "*.dat"),
+                         ("All Files", "*.*"))
         )
 
         if file_name:
@@ -768,12 +768,25 @@ class TasksPage:
             else:
                 file_name=f'{file_name}.dat'
 
-        stuff = self.tasks_list.get(0,END)
-        output_file = open(file_name, 'wb')
-        pickle.dump(stuff,output_file)
+        tasks = self.tasks_list.get(0,END)
+        output = open(file_name, 'wb')
+        pickle.dump(tasks, output)
 
     def open_list(self):
-        pass
+        file_name = filedialog.askopenfilename(
+            initialdir=cwd,
+            title = "Open File",
+            filetypes=(("Dat Files", "*.dat"),("All Files","*.*"))
+        )
+
+        if file_name:
+            self.tasks_list.delete(0,END)
+
+            input_file = open(file_name, 'rb')
+            tasks = pickle.load(input_file)
+
+            for item in tasks:
+                self.tasks_list.insert(END,item)
 
     def clicked(self):
         # click_sound.play()
