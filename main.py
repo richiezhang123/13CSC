@@ -9,6 +9,8 @@ from tkinter import filedialog
 import pickle
 import os
 
+from pyglet.font.dwrite import white
+
 cwd = os.getcwd()
 
 
@@ -26,6 +28,9 @@ pyglet.font.add_file("Etna.otf")
 
 
 # tasks_font = Font(family="Mont Heavy DEMO", size = 35)
+
+
+
 
 class MenuPage:
     def __init__(self, parent):
@@ -72,7 +77,7 @@ class MenuPage:
                                   bg="#8d0401", borderwidth=0, activebackground="#8d0401")
         self.user_button.place(relx=0.85, rely=0.022)
 
-        self.settings_button = Button(self.studi_frame, image=self.settings_image_tk, command=self.clicked,
+        self.settings_button = Button(self.studi_frame, image=self.settings_image_tk, command=self.openSettings,
                                       cursor="hand2", bg="#8d0401", borderwidth=0, activebackground="#8d0401")
         self.settings_button.place(relx=0.9, rely=0.022)
 
@@ -165,6 +170,9 @@ class MenuPage:
         self.studi_frame.destroy()
         TasksPage(root)
 
+    def openSettings(self):
+        self.studi_frame.destroy()
+        SettingsPage(root)
 
 class TimerPage:
     def __init__(self, parent):
@@ -201,7 +209,7 @@ class TimerPage:
         self.user_button.bind("<Enter>", self.user_on_enter)
         self.user_button.bind("<Leave>", self.user_on_leave)
 
-        self.settings_button = Button(self.studi_frame, image=self.settings_image_tk, command=self.clicked,
+        self.settings_button = Button(self.studi_frame, image=self.settings_image_tk, command=self.openSettings,
                                       cursor="hand2", bg="#8d0401", borderwidth=0, activebackground="#8d0401")
         self.settings_button.place(relx=0.9, rely=0.022)
         self.settings_button.bind("<Enter>", self.settings_on_enter)
@@ -459,6 +467,11 @@ class TimerPage:
         self.studi_frame.destroy()
         TasksPage(root)
 
+    def openSettings(self):
+        self.studi_frame.destroy()
+        SettingsPage(root)
+
+
     def clicked(self):
         # click_sound.play()
         pass
@@ -466,7 +479,6 @@ class TimerPage:
     def exit_program(self):
         self.studi_frame.destroy()
         exit()
-
 
 class TasksPage:
     def __init__(self, parent):
@@ -503,7 +515,7 @@ class TasksPage:
         self.user_button.bind("<Enter>", self.user_on_enter)
         self.user_button.bind("<Leave>", self.user_on_leave)
 
-        self.settings_button = Button(self.studi_frame, image=self.settings_image_tk, command=self.clicked,
+        self.settings_button = Button(self.studi_frame, image=self.settings_image_tk, command=self.openSettings,
                                       cursor="hand2", bg="#8d0401", borderwidth=0, activebackground="#8d0401")
         self.settings_button.place(relx=0.9, rely=0.022)
         self.settings_button.bind("<Enter>", self.settings_on_enter)
@@ -755,8 +767,9 @@ class TasksPage:
         self.tasks_list.selection_clear(0,END)
 
     def save_list(self):
-        file_name = filedialog.asksaveasfilename(
+        file_name = filedialog.asksaveasfile(
             initialdir=cwd,
+            initialfile="SAVE AS EXACT NAME AS SUBJECT",
             title = "Save File",
             filetypes = (("Dat Files", "*.dat"),
                          ("All Files", "*.*"))
@@ -778,7 +791,6 @@ class TasksPage:
             title = "Open File",
             filetypes=(("Dat Files", "*.dat"),("All Files","*.*"))
         )
-
         if file_name:
             self.tasks_list.delete(0,END)
 
@@ -797,9 +809,16 @@ class TasksPage:
         self.studi_frame.destroy()
         TimerPage(root)
 
+    def openSettings(self):
+        self.studi_frame.destroy()
+        SettingsPage(root)
+
     def exit_program(self):
         self.studi_frame.destroy()
         exit()
+
+    def sub1(self):
+        pass
 
     def user_on_enter(self, event):
         self.user_image = Image.open("User_Hover.png")
@@ -843,6 +862,39 @@ class TasksPage:
         self.timer_image_tk = ImageTk.PhotoImage(self.small_timer_image)
         self.timer_button.config(image=self.timer_image_tk)
 
+class SettingsPage:
+    def __init__(self, parent):
+        self.window_width = parent.winfo_screenwidth()
+        self.window_height = parent.winfo_screenheight()
+
+        self.background_image = Image.open("Settings_Page.png")
+        self.background_image = self.background_image.resize((self.window_width, self.window_height), Image.LANCZOS)
+        self.background_image_tk = ImageTk.PhotoImage(self.background_image)
+
+        self.studi_frame = Frame(parent)
+        self.studi_frame.pack(fill=BOTH, expand=TRUE)
+
+        self.image_label = Label(self.studi_frame, image=self.background_image_tk,
+                                 borderwidth=0)  # Creates a label, which holds the background image
+        self.image_label.place(relwidth=1, relheight=1)  # Ensures that the label/image fits the entire screen
+
+        # self.timer_image = Image.open("Timer.png")
+        # self.timer_image_tk = ImageTk.PhotoImage(self.timer_image)
+        #
+        # self.tasks_image = Image.open("Tasks.png")
+        # self.tasks_image_tk = ImageTk.PhotoImage(self.tasks_image)
+        #
+        # self.user_image = Image.open("User.png")
+        # self.user_image_tk = ImageTk.PhotoImage(self.user_image)
+        #
+        # self.settings_image = Image.open("Settings.png")
+        # self.settings_image_tk = ImageTk.PhotoImage(self.settings_image)
+        #
+        # self.exit_image = Image.open("Exit.png")
+        # self.exit_image_Tk = ImageTk.PhotoImage(self.exit_image)
+
+        self.subject_1_text = customtkinter.CTkLabel(self.studi_frame, text="Subject 1", font = ('Mont Heavy DEMO',35))
+        self.subject_1_text.place(relx=0.2,rely=0.8)
 
 # Runs the program
 if __name__ == "__main__":  # Ensures the code only runs when the program is executed
