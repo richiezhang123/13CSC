@@ -878,23 +878,46 @@ class SettingsPage:
                                  borderwidth=0)  # Creates a label, which holds the background image
         self.image_label.place(relwidth=1, relheight=1)  # Ensures that the label/image fits the entire screen
 
-        # self.timer_image = Image.open("Timer.png")
-        # self.timer_image_tk = ImageTk.PhotoImage(self.timer_image)
-        #
-        # self.tasks_image = Image.open("Tasks.png")
-        # self.tasks_image_tk = ImageTk.PhotoImage(self.tasks_image)
-        #
-        # self.user_image = Image.open("User.png")
-        # self.user_image_tk = ImageTk.PhotoImage(self.user_image)
-        #
-        # self.settings_image = Image.open("Settings.png")
-        # self.settings_image_tk = ImageTk.PhotoImage(self.settings_image)
-        #
-        # self.exit_image = Image.open("Exit.png")
-        # self.exit_image_Tk = ImageTk.PhotoImage(self.exit_image)
+        self.timer_image = Image.open("Timer.png")
+        self.timer_image_tk = ImageTk.PhotoImage(self.timer_image)
+
+        self.tasks_image = Image.open("Tasks.png")
+        self.tasks_image_tk = ImageTk.PhotoImage(self.tasks_image)
+
+        self.user_image = Image.open("User.png")
+        self.user_image_tk = ImageTk.PhotoImage(self.user_image)
+
+        self.settings_image = Image.open("Settings.png")
+        self.settings_image_tk = ImageTk.PhotoImage(self.settings_image)
+
+        self.exit_image = Image.open("Exit.png")
+        self.exit_image_Tk = ImageTk.PhotoImage(self.exit_image)
 
         self.subject_1_text = customtkinter.CTkLabel(self.studi_frame, text="Subject 1", font = ('Mont Heavy DEMO',35))
         self.subject_1_text.place(relx=0.2,rely=0.8)
+
+        self.subject_2_text = customtkinter.CTkLabel(self.studi_frame, text="Subject 2", font = ('Mont Heavy DEMO',35))
+        self.subject_2_text.place(relx=0.33,rely=0.8)
+
+        self.subject_3_text = customtkinter.CTkLabel(self.studi_frame, text="Subject 3", font = ('Mont Heavy DEMO',35))
+        self.subject_3_text.place(relx=0.46,rely=0.8)
+
+        self.subject_4_text = customtkinter.CTkLabel(self.studi_frame, text="Subject 4", font = ('Mont Heavy DEMO',35))
+        self.subject_4_text.place(relx=0.59,rely=0.8)
+
+        self.subject_5_text = customtkinter.CTkLabel(self.studi_frame, text="Subject 5", font = ('Mont Heavy DEMO',35))
+        self.subject_5_text.place(relx=0.72,rely=0.8)
+
+
+        self.exit_button = Button(self.studi_frame, image=self.exit_image_Tk, command=self.exit_program, cursor="hand2",
+                                  bg="#8d0401", borderwidth=0, activebackground="#8d0401")
+        self.exit_button.place(relx=0.95, rely=0.027)
+
+
+
+    def exit_program(self):
+        self.studi_frame.destroy()
+        exit()
 
 # Runs the program
 if __name__ == "__main__":  # Ensures the code only runs when the program is executed
