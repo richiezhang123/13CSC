@@ -9,7 +9,6 @@ from tkinter import filedialog
 import pickle
 import os
 
-from pyglet.font.dwrite import white
 
 cwd = os.getcwd()
 
@@ -171,6 +170,8 @@ class MenuPage:
         TasksPage(root)
 
     def openSettings(self):
+        global current_page
+        current_page = "Menu"
         self.studi_frame.destroy()
         SettingsPage(root)
 
@@ -468,6 +469,8 @@ class TimerPage:
         TasksPage(root)
 
     def openSettings(self):
+        global current_page
+        current_page = "Timer"
         self.studi_frame.destroy()
         SettingsPage(root)
 
@@ -493,8 +496,8 @@ class TasksPage:
         self.studi_frame.pack(fill=BOTH, expand=TRUE)
 
         self.image_label = Label(self.studi_frame, image=self.background_image_tk,
-                                 borderwidth=0)  # Creates a label, which holds the background image
-        self.image_label.place(relwidth=1, relheight=1)  # Ensures that the label/image fits the entire screen
+                                 borderwidth=0)
+        self.image_label.place(relwidth=1, relheight=1)
 
         self.user_image = Image.open("User.png")
         self.user_image_tk = ImageTk.PhotoImage(self.user_image)
@@ -682,7 +685,7 @@ class TasksPage:
 
         self.tasks_list = Listbox(
             self.studi_frame,
-            font=("Mont Heavy DEMO", 22),
+            font=('Mont Heavy DEMO', 22),
             width=50,
             bg="#edebf2",
             bd=0,
@@ -694,7 +697,7 @@ class TasksPage:
 
         self.tasks_list = Listbox(
             self.studi_frame,
-            font=("Mont Heavy DEMO", 22),
+            font=('Mont Heavy DEMO', 22),
             width=50,
             bg="#edebf2",
             bd=0,
@@ -745,6 +748,7 @@ class TasksPage:
         self.open_button.place(relx=0.08, rely=0.01)
 
     def add_task(self):
+        global task
         task = self.enter_tasks.get()
         if task.strip() == "":
             pass
@@ -753,9 +757,12 @@ class TasksPage:
             self.enter_tasks.delete(0,END)
 
     def edit_task(self):
-        for item in self.tasks_list.curselection():
-            self.tasks_list.delete(item)
-            self.tasks_list.insert(item,self.enter_tasks.get())
+        if task.strip() == "":
+            pass
+        else:
+            for item in self.tasks_list.curselection():
+                self.tasks_list.delete(item)
+                self.tasks_list.insert(item,task)
 
     def delete_task(self):
         self.tasks_list.delete(ANCHOR)
@@ -810,6 +817,8 @@ class TasksPage:
         TimerPage(root)
 
     def openSettings(self):
+        global current_page
+        current_page = "Tasks"
         self.studi_frame.destroy()
         SettingsPage(root)
 
@@ -893,26 +902,175 @@ class SettingsPage:
         self.exit_image = Image.open("Exit.png")
         self.exit_image_Tk = ImageTk.PhotoImage(self.exit_image)
 
-        self.subject_1_text = customtkinter.CTkLabel(self.studi_frame, text="Subject 1", font = ('Mont Heavy DEMO',35))
-        self.subject_1_text.place(relx=0.2,rely=0.8)
+        self.subject_1_text = customtkinter.CTkLabel(
+            self.studi_frame,
+            text="Subject 1",
+            font = ('Mont Heavy DEMO',35),
+            fg_color = "#ebebeb"
+            )
+        self.subject_1_text.place(relx=0.2,rely=0.69)
+        pywinstyles.set_opacity(self.subject_1_text, color = "#ebebeb")
 
-        self.subject_2_text = customtkinter.CTkLabel(self.studi_frame, text="Subject 2", font = ('Mont Heavy DEMO',35))
-        self.subject_2_text.place(relx=0.33,rely=0.8)
+        self.subject_1_entry = customtkinter.CTkEntry(
+            self.studi_frame,
+            placeholder_text="Enter Subject 1",
+            font = ("Mont Heavy DEMO", 23),
+            width = 225,
+            height = 55,
+            border_width=0,
+            fg_color="#c7c7c7"
+        )
+        self.subject_1_entry.place(relx = 0.1835, rely=0.76)
 
-        self.subject_3_text = customtkinter.CTkLabel(self.studi_frame, text="Subject 3", font = ('Mont Heavy DEMO',35))
-        self.subject_3_text.place(relx=0.46,rely=0.8)
+        self.subject_1_button = customtkinter.CTkButton(
+            self.studi_frame,
+            text = "APPLY",
+            corner_radius=40,
+            font = ("Mont Heavy DEMO", 30),
+            fg_color="#56b873",
+            hover_color="#468c5b",
+            border_width=0,
+        )
+        self.subject_1_button.place(relx=0.2,rely=0.83)
 
-        self.subject_4_text = customtkinter.CTkLabel(self.studi_frame, text="Subject 4", font = ('Mont Heavy DEMO',35))
-        self.subject_4_text.place(relx=0.59,rely=0.8)
+        self.subject_2_text = customtkinter.CTkLabel(
+            self.studi_frame,
+            text="Subject 2",
+            font = ('Mont Heavy DEMO',35),
+            fg_color = "#ebebeb"
+            )
+        self.subject_2_text.place(relx=0.33,rely=0.69)
+        pywinstyles.set_opacity(self.subject_2_text, color = "#ebebeb")
 
-        self.subject_5_text = customtkinter.CTkLabel(self.studi_frame, text="Subject 5", font = ('Mont Heavy DEMO',35))
-        self.subject_5_text.place(relx=0.72,rely=0.8)
+        self.subject_2_entry = customtkinter.CTkEntry(
+            self.studi_frame,
+            placeholder_text="Enter Subject 2",
+            font=("Mont Heavy DEMO", 23),
+            width=225,
+            height=55,
+            border_width=0,
+            fg_color="#c7c7c7"
+        )
+        self.subject_2_entry.place(relx=0.3135, rely=0.76)
+
+        self.subject_2_button = customtkinter.CTkButton(
+            self.studi_frame,
+            text="APPLY",
+            corner_radius=40,
+            font=("Mont Heavy DEMO", 30),
+            fg_color="#56b873",
+            hover_color="#468c5b",
+            border_width=0,
+        )
+        self.subject_2_button.place(relx=0.335, rely=0.83)
+
+        self.subject_3_text = customtkinter.CTkLabel(
+            self.studi_frame,
+            text="Subject 3",
+            font = ('Mont Heavy DEMO',35),
+            fg_color = "#ebebeb"
+            )
+        self.subject_3_text.place(relx=0.46,rely=0.69)
+        pywinstyles.set_opacity(self.subject_3_text, color = "#ebebeb")
+
+        self.subject_3_entry = customtkinter.CTkEntry(
+            self.studi_frame,
+            placeholder_text="Enter Subject 3",
+            font=("Mont Heavy DEMO", 23),
+            width=225,
+            height=55,
+            border_width=0,
+            fg_color="#c7c7c7"
+        )
+        self.subject_3_entry.place(relx=0.4435, rely=0.76)
+
+        self.subject_3_button = customtkinter.CTkButton(
+            self.studi_frame,
+            text="APPLY",
+            corner_radius=40,
+            font=("Mont Heavy DEMO", 30),
+            fg_color="#56b873",
+            hover_color="#468c5b",
+            border_width=0,
+        )
+        self.subject_3_button.place(relx=0.465, rely=0.83)
+
+        self.subject_4_text = customtkinter.CTkLabel(
+            self.studi_frame,
+            text="Subject 4",
+            font = ('Mont Heavy DEMO',35),
+            fg_color = "#ebebeb"
+            )
+        self.subject_4_text.place(relx=0.59,rely=0.69)
+        pywinstyles.set_opacity(self.subject_4_text, color = "#ebebeb")
+
+        self.subject_4_entry = customtkinter.CTkEntry(
+            self.studi_frame,
+            placeholder_text="Enter Subject 3",
+            font=("Mont Heavy DEMO", 23),
+            width=225,
+            height=55,
+            border_width=0,
+            fg_color="#c7c7c7"
+        )
+        self.subject_4_entry.place(relx=0.577, rely=0.76)
+
+        self.subject_4_button = customtkinter.CTkButton(
+            self.studi_frame,
+            text="APPLY",
+            corner_radius=40,
+            font=("Mont Heavy DEMO", 30),
+            fg_color="#56b873",
+            hover_color="#468c5b",
+            border_width=0,
+        )
+        self.subject_4_button.place(relx=0.598, rely=0.83)
+
+        self.subject_5_text = customtkinter.CTkLabel(
+            self.studi_frame,
+            text="Subject 5",
+            font = ('Mont Heavy DEMO',35),
+            fg_color = "#ebebeb"
+            )
+        self.subject_5_text.place(relx=0.72,rely=0.69)
+        pywinstyles.set_opacity(self.subject_5_text, color = "#ebebeb")
+
+        self.subject_5_entry = customtkinter.CTkEntry(
+            self.studi_frame,
+            placeholder_text="Enter Subject 3",
+            font=("Mont Heavy DEMO", 23),
+            width=225,
+            height=55,
+            border_width=0,
+            fg_color="#c7c7c7"
+        )
+        self.subject_5_entry.place(relx=0.705, rely=0.76)
+
+        self.subject_5_button = customtkinter.CTkButton(
+            self.studi_frame,
+            text="APPLY",
+            corner_radius=40,
+            font=("Mont Heavy DEMO", 30),
+            fg_color="#56b873",
+            hover_color="#468c5b",
+            border_width=0,
+        )
+        self.subject_5_button.place(relx=0.7285, rely=0.83)
+
+        self.return_button = customtkinter.CTkButton(
+            self.studi_frame,
+            text="buton",
+            command = self.return_page
+        )
+        self.return_button.pack()
+
 
 
         self.exit_button = Button(self.studi_frame, image=self.exit_image_Tk, command=self.exit_program, cursor="hand2",
                                   bg="#8d0401", borderwidth=0, activebackground="#8d0401")
         self.exit_button.place(relx=0.95, rely=0.027)
 
+    def return_page(self):
 
 
     def exit_program(self):
