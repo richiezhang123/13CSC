@@ -539,7 +539,7 @@ class TasksPage:
 
         self.subject_1 = customtkinter.CTkButton(
             self.studi_frame,
-            text="English",
+            text=subject_1,
             font=('Mont Heavy DEMO', 40),
             height=100,
             width=100,
@@ -554,7 +554,7 @@ class TasksPage:
 
         self.subject_2 = customtkinter.CTkButton(
             self.studi_frame,
-            text="CSC",
+            text=subject_2,
             font=('Mont Heavy DEMO', 40),
             height=100,
             width=100,
@@ -568,7 +568,7 @@ class TasksPage:
 
         self.subject_3 = customtkinter.CTkButton(
             self.studi_frame,
-            text="Economics",
+            text=subject_3,
             font=('Mont Heavy DEMO', 40),
             height=100,
             width=100,
@@ -582,7 +582,7 @@ class TasksPage:
 
         self.subject_4 = customtkinter.CTkButton(
             self.studi_frame,
-            text="Statistics",
+            text=subject_4,
             font=('Mont Heavy DEMO', 40),
             height=100,
             width=100,
@@ -596,7 +596,7 @@ class TasksPage:
 
         self.subject_5 = customtkinter.CTkButton(
             self.studi_frame,
-            text="Classics",
+            text=subject_5,
             font=('Mont Heavy DEMO', 40),
             height=100,
             width=100,
@@ -910,7 +910,6 @@ class SettingsPage:
             )
         self.subject_1_text.place(relx=0.2,rely=0.69)
         pywinstyles.set_opacity(self.subject_1_text, color = "#ebebeb")
-
         self.subject_1_entry = customtkinter.CTkEntry(
             self.studi_frame,
             placeholder_text="Enter Subject 1",
@@ -921,7 +920,6 @@ class SettingsPage:
             fg_color="#c7c7c7"
         )
         self.subject_1_entry.place(relx = 0.1835, rely=0.76)
-
         self.subject_1_button = customtkinter.CTkButton(
             self.studi_frame,
             text = "APPLY",
@@ -930,6 +928,7 @@ class SettingsPage:
             fg_color="#56b873",
             hover_color="#468c5b",
             border_width=0,
+            command = self.subject_1_add
         )
         self.subject_1_button.place(relx=0.2,rely=0.83)
 
@@ -941,7 +940,6 @@ class SettingsPage:
             )
         self.subject_2_text.place(relx=0.33,rely=0.69)
         pywinstyles.set_opacity(self.subject_2_text, color = "#ebebeb")
-
         self.subject_2_entry = customtkinter.CTkEntry(
             self.studi_frame,
             placeholder_text="Enter Subject 2",
@@ -952,7 +950,6 @@ class SettingsPage:
             fg_color="#c7c7c7"
         )
         self.subject_2_entry.place(relx=0.3135, rely=0.76)
-
         self.subject_2_button = customtkinter.CTkButton(
             self.studi_frame,
             text="APPLY",
@@ -961,6 +958,7 @@ class SettingsPage:
             fg_color="#56b873",
             hover_color="#468c5b",
             border_width=0,
+            command=self.subject_2_add
         )
         self.subject_2_button.place(relx=0.335, rely=0.83)
 
@@ -972,7 +970,6 @@ class SettingsPage:
             )
         self.subject_3_text.place(relx=0.46,rely=0.69)
         pywinstyles.set_opacity(self.subject_3_text, color = "#ebebeb")
-
         self.subject_3_entry = customtkinter.CTkEntry(
             self.studi_frame,
             placeholder_text="Enter Subject 3",
@@ -983,7 +980,6 @@ class SettingsPage:
             fg_color="#c7c7c7"
         )
         self.subject_3_entry.place(relx=0.4435, rely=0.76)
-
         self.subject_3_button = customtkinter.CTkButton(
             self.studi_frame,
             text="APPLY",
@@ -992,6 +988,7 @@ class SettingsPage:
             fg_color="#56b873",
             hover_color="#468c5b",
             border_width=0,
+            command=self.subject_3_add
         )
         self.subject_3_button.place(relx=0.465, rely=0.83)
 
@@ -1003,7 +1000,6 @@ class SettingsPage:
             )
         self.subject_4_text.place(relx=0.59,rely=0.69)
         pywinstyles.set_opacity(self.subject_4_text, color = "#ebebeb")
-
         self.subject_4_entry = customtkinter.CTkEntry(
             self.studi_frame,
             placeholder_text="Enter Subject 3",
@@ -1014,7 +1010,6 @@ class SettingsPage:
             fg_color="#c7c7c7"
         )
         self.subject_4_entry.place(relx=0.577, rely=0.76)
-
         self.subject_4_button = customtkinter.CTkButton(
             self.studi_frame,
             text="APPLY",
@@ -1023,6 +1018,7 @@ class SettingsPage:
             fg_color="#56b873",
             hover_color="#468c5b",
             border_width=0,
+            command=self.subject_4_add
         )
         self.subject_4_button.place(relx=0.598, rely=0.83)
 
@@ -1034,7 +1030,6 @@ class SettingsPage:
             )
         self.subject_5_text.place(relx=0.72,rely=0.69)
         pywinstyles.set_opacity(self.subject_5_text, color = "#ebebeb")
-
         self.subject_5_entry = customtkinter.CTkEntry(
             self.studi_frame,
             placeholder_text="Enter Subject 3",
@@ -1045,7 +1040,6 @@ class SettingsPage:
             fg_color="#c7c7c7"
         )
         self.subject_5_entry.place(relx=0.705, rely=0.76)
-
         self.subject_5_button = customtkinter.CTkButton(
             self.studi_frame,
             text="APPLY",
@@ -1054,24 +1048,62 @@ class SettingsPage:
             fg_color="#56b873",
             hover_color="#468c5b",
             border_width=0,
+            command=self.subject_5_add
+
         )
         self.subject_5_button.place(relx=0.7285, rely=0.83)
 
         self.return_button = customtkinter.CTkButton(
             self.studi_frame,
-            text="buton",
+            text="←",
+            font = ("Gaco Strong Demo", 75),
+            border_width=0,
+            width=70,
+            fg_color="#8f0401",
+            bg_color="#8f0401",
+            hover_color="#750401",
             command = self.return_page
+
         )
-        self.return_button.pack()
-
-
+        self.return_button.place(relx=0.02,rely=0.01)
 
         self.exit_button = Button(self.studi_frame, image=self.exit_image_Tk, command=self.exit_program, cursor="hand2",
                                   bg="#8d0401", borderwidth=0, activebackground="#8d0401")
         self.exit_button.place(relx=0.95, rely=0.027)
 
     def return_page(self):
+        global current_page
+        if current_page=="Menu":
+            print("MENU")
+            self.studi_frame.destroy()
+            MenuPage(root)
 
+        elif current_page == "Timer":
+            print("TIMER")
+            self.studi_frame.destroy()
+            TimerPage(root)
+
+        elif current_page == "Tasks":
+            print("TASKS")
+            self.studi_frame.destroy()
+            TasksPage(root)
+
+    def subject_1_add(self):
+        global subject_1
+        subject_1 = self.subject_1_entry.get()
+
+    def subject_2_add(self):
+        global subject_2
+        subject_2 = self.subject_2_entry.get()
+    def subject_3_add(self):
+        global subject_3
+        subject_3 = self.subject_3_entry.get()
+    def subject_4_add(self):
+        global subject_4
+        subject_4 = self.subject_4_entry.get()
+    def subject_5_add(self):
+        global subject_5
+        subject_5 = self.subject_5_entry.get()
 
     def exit_program(self):
         self.studi_frame.destroy()
