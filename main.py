@@ -399,7 +399,7 @@ class TimerPage:
             self.timer_status.configure(text="Cannot have special characters, try again!")
         elif self.minute_entry.get().strip() == "":
             self.timer_status.configure(text="Please enter a number, try again!")
-        elif any(char in "abcdefghijklmnopqrstuvwxyz" for char in self.minute_entry.get()):
+        elif any(char in "abcdefghijklmnopqrstuvwxyz" for char in self.minute_entry.get().lower()):
             self.timer_status.configure(text="Cannot have letters, try again!")
         else:
             self.is_timer_running = False
@@ -537,82 +537,82 @@ class TasksPage:
         self.timer_button.bind("<Enter>", self.timer_on_enter)
         self.timer_button.bind("<Leave>", self.timer_on_leave)
 
-        subject_1 = "Subject 1"
-        subject_2 = "Subject 2"
-        subject_3 = "Subject 3"
-        subject_4 = "Subject 4"
-        subject_5 = "Subject 5"
-
-        self.subject_1 = customtkinter.CTkButton(
-            self.studi_frame,
-            text=subject_1,
-            font=('Mont Heavy DEMO', 40),
-            height=100,
-            width=100,
-            text_color="black",
-            fg_color="#dbdbdb",
-            corner_radius=50,
-            bg_color="#a60c09",
-            hover_color="#c2c0c0"
-        )
-        self.subject_1.place(relx=0.03, rely=0.185)
-        pywinstyles.set_opacity(self.subject_1, color="#a60c09")
-
-        self.subject_2 = customtkinter.CTkButton(
-            self.studi_frame,
-            text=subject_2,
-            font=('Mont Heavy DEMO', 40),
-            height=100,
-            width=100,
-            text_color="black",
-            fg_color="#dbdbdb",
-            corner_radius=50,
-            bg_color="#a60c09",
-            hover_color="#c2c0c0")
-        self.subject_2.place(relx=0.03, rely=0.345)
-        pywinstyles.set_opacity(self.subject_2, color="#a60c09")
-
-        self.subject_3 = customtkinter.CTkButton(
-            self.studi_frame,
-            text=subject_3,
-            font=('Mont Heavy DEMO', 40),
-            height=100,
-            width=100,
-            text_color="black",
-            fg_color="#dbdbdb",
-            corner_radius=50,
-            bg_color="#a60c09",
-            hover_color="#c2c0c0")
-        self.subject_3.place(relx=0.03, rely=0.505)
-        pywinstyles.set_opacity(self.subject_3, color="#a60c09")
-
-        self.subject_4 = customtkinter.CTkButton(
-            self.studi_frame,
-            text=subject_4,
-            font=('Mont Heavy DEMO', 40),
-            height=100,
-            width=100,
-            text_color="black",
-            fg_color="#dbdbdb",
-            corner_radius=50,
-            bg_color="#a60c09",
-            hover_color="#c2c0c0")
-        self.subject_4.place(relx=0.03, rely=0.665)
-        pywinstyles.set_opacity(self.subject_4, color="#a60c09")
-
-        self.subject_5 = customtkinter.CTkButton(
-            self.studi_frame,
-            text=subject_5,
-            font=('Mont Heavy DEMO', 40),
-            height=100,
-            width=100,
-            text_color="black",
-            fg_color="#dbdbdb",
-            corner_radius=50,
-            bg_color="#a60c09",
-            hover_color="#c2c0c0")
-        self.subject_5.place(relx=0.03, rely=0.825)
-        pywinstyles.set_opacity(self.subject_5, color="#a60c09")
+        # subject_1 = "Subject 1"
+        # subject_2 = "Subject 2"
+        # subject_3 = "Subject 3"
+        # subject_4 = "Subject 4"
+        # subject_5 = "Subject 5"
+        #
+        # self.subject_1 = customtkinter.CTkButton(
+        #     self.studi_frame,
+        #     text=subject_1,
+        #     font=('Mont Heavy DEMO', 40),
+        #     height=100,
+        #     width=100,
+        #     text_color="black",
+        #     fg_color="#dbdbdb",
+        #     corner_radius=50,
+        #     bg_color="#a60c09",
+        #     hover_color="#c2c0c0"
+        # )
+        # self.subject_1.place(relx=0.03, rely=0.185)
+        # pywinstyles.set_opacity(self.subject_1, color="#a60c09")
+        #
+        # self.subject_2 = customtkinter.CTkButton(
+        #     self.studi_frame,
+        #     text=subject_2,
+        #     font=('Mont Heavy DEMO', 40),
+        #     height=100,
+        #     width=100,
+        #     text_color="black",
+        #     fg_color="#dbdbdb",
+        #     corner_radius=50,
+        #     bg_color="#a60c09",
+        #     hover_color="#c2c0c0")
+        # self.subject_2.place(relx=0.03, rely=0.345)
+        # pywinstyles.set_opacity(self.subject_2, color="#a60c09")
+        #
+        # self.subject_3 = customtkinter.CTkButton(
+        #     self.studi_frame,
+        #     text=subject_3,
+        #     font=('Mont Heavy DEMO', 40),
+        #     height=100,
+        #     width=100,
+        #     text_color="black",
+        #     fg_color="#dbdbdb",
+        #     corner_radius=50,
+        #     bg_color="#a60c09",
+        #     hover_color="#c2c0c0")
+        # self.subject_3.place(relx=0.03, rely=0.505)
+        # pywinstyles.set_opacity(self.subject_3, color="#a60c09")
+        #
+        # self.subject_4 = customtkinter.CTkButton(
+        #     self.studi_frame,
+        #     text=subject_4,
+        #     font=('Mont Heavy DEMO', 40),
+        #     height=100,
+        #     width=100,
+        #     text_color="black",
+        #     fg_color="#dbdbdb",
+        #     corner_radius=50,
+        #     bg_color="#a60c09",
+        #     hover_color="#c2c0c0")
+        # self.subject_4.place(relx=0.03, rely=0.665)
+        # pywinstyles.set_opacity(self.subject_4, color="#a60c09")
+        #
+        # self.subject_5 = customtkinter.CTkButton(
+        #     self.studi_frame,
+        #     text=subject_5,
+        #     font=('Mont Heavy DEMO', 40),
+        #     height=100,
+        #     width=100,
+        #     text_color="black",
+        #     fg_color="#dbdbdb",
+        #     corner_radius=50,
+        #     bg_color="#a60c09",
+        #     hover_color="#c2c0c0")
+        # self.subject_5.place(relx=0.03, rely=0.825)
+        # pywinstyles.set_opacity(self.subject_5, color="#a60c09")
 
         self.enter_tasks = customtkinter.CTkEntry(
             self.studi_frame,
@@ -723,35 +723,35 @@ class TasksPage:
         self.tasks_list.config(yscrollcommand=self.tasks_scrollbar)
         self.tasks_scrollbar.config(command=self.tasks_list.yview)
 
-        # self.save_button = customtkinter.CTkButton(
-        #     self.studi_frame,
-        #     text="SAVE",
-        #     font=('Gaco Strong Demo', 50),
-        #     text_color="white",
-        #     fg_color="#cf7908",
-        #     width=300,
-        #     height=300,
-        #     border_spacing=6,
-        #     border_width=-5,
-        #     hover_color="#9c5b06",
-        #     command=self.save_list
-        # )
-        # self.save_button.place(relx=0.05, rely=0.21)
-        #
-        # self.open_button = customtkinter.CTkButton(
-        #     self.studi_frame,
-        #     text="OPEN",
-        #     font=('Gaco Strong Demo', 50),
-        #     text_color="white",
-        #     fg_color="#376dab",
-        #     width=300,
-        #     height=300,
-        #     border_spacing=6,
-        #     border_width=-5,
-        #     hover_color="#23466e",
-        #     command=self.open_list
-        # )
-        # self.open_button.place(relx=0.05, rely=0.525)
+        self.save_button = customtkinter.CTkButton(
+            self.studi_frame,
+            text="SAVE",
+            font=('Gaco Strong Demo', 50),
+            text_color="white",
+            fg_color="#cf7908",
+            width=300,
+            height=300,
+            border_spacing=6,
+            border_width=-5,
+            hover_color="#9c5b06",
+            command=self.save_list
+        )
+        self.save_button.place(relx=0.05, rely=0.21)
+
+        self.open_button = customtkinter.CTkButton(
+            self.studi_frame,
+            text="OPEN",
+            font=('Gaco Strong Demo', 50),
+            text_color="white",
+            fg_color="#376dab",
+            width=300,
+            height=300,
+            border_spacing=6,
+            border_width=-5,
+            hover_color="#23466e",
+            command=self.open_list
+        )
+        self.open_button.place(relx=0.05, rely=0.525)
 
     def add_task(self):
         global task
@@ -780,9 +780,9 @@ class TasksPage:
         self.tasks_list.selection_clear(0,END)
 
     def save_list(self):
-        file_name = filedialog.asksaveasfile(
+        file_name = filedialog.asksaveasfilename(
             initialdir=cwd,
-            initialfile="SAVE AS EXACT NAME AS SUBJECT",
+            initialfile="",
             title = "Save File",
             filetypes = (("Dat Files", "*.dat"),
                          ("All Files", "*.*"))
