@@ -537,6 +537,12 @@ class TasksPage:
         self.timer_button.bind("<Enter>", self.timer_on_enter)
         self.timer_button.bind("<Leave>", self.timer_on_leave)
 
+        subject_1 = "Subject 1"
+        subject_2 = "Subject 2"
+        subject_3 = "Subject 3"
+        subject_4 = "Subject 4"
+        subject_5 = "Subject 5"
+
         self.subject_1 = customtkinter.CTkButton(
             self.studi_frame,
             text=subject_1,
@@ -717,35 +723,35 @@ class TasksPage:
         self.tasks_list.config(yscrollcommand=self.tasks_scrollbar)
         self.tasks_scrollbar.config(command=self.tasks_list.yview)
 
-        self.save_button = customtkinter.CTkButton(
-            self.studi_frame,
-            text="SAVE",
-            font=('Gaco Strong Demo', 30),
-            text_color="white",
-            fg_color="#cf7908",
-            width=-40,
-            height=-20,
-            border_spacing=6,
-            border_width=-1,
-            hover_color="#9c5b06",
-            command=self.save_list
-        )
-        self.save_button.place(relx=0.01, rely=0.01)
-
-        self.open_button = customtkinter.CTkButton(
-            self.studi_frame,
-            text="OPEN",
-            font=('Gaco Strong Demo', 30),
-            text_color="white",
-            fg_color="#376dab",
-            width=-40,
-            height=-20,
-            border_spacing=6,
-            border_width=-1,
-            hover_color="#23466e",
-            command=self.open_list
-        )
-        self.open_button.place(relx=0.08, rely=0.01)
+        # self.save_button = customtkinter.CTkButton(
+        #     self.studi_frame,
+        #     text="SAVE",
+        #     font=('Gaco Strong Demo', 50),
+        #     text_color="white",
+        #     fg_color="#cf7908",
+        #     width=300,
+        #     height=300,
+        #     border_spacing=6,
+        #     border_width=-5,
+        #     hover_color="#9c5b06",
+        #     command=self.save_list
+        # )
+        # self.save_button.place(relx=0.05, rely=0.21)
+        #
+        # self.open_button = customtkinter.CTkButton(
+        #     self.studi_frame,
+        #     text="OPEN",
+        #     font=('Gaco Strong Demo', 50),
+        #     text_color="white",
+        #     fg_color="#376dab",
+        #     width=300,
+        #     height=300,
+        #     border_spacing=6,
+        #     border_width=-5,
+        #     hover_color="#23466e",
+        #     command=self.open_list
+        # )
+        # self.open_button.place(relx=0.05, rely=0.525)
 
     def add_task(self):
         global task
