@@ -53,8 +53,6 @@ class MenuPage:
         self.tasks_image = Image.open("Tasks.png")
         self.tasks_image_tk = ImageTk.PhotoImage(self.tasks_image)
 
-        self.user_image = Image.open("User.png")
-        self.user_image_tk = ImageTk.PhotoImage(self.user_image)
 
         self.settings_image = Image.open("Settings.png")
         self.settings_image_tk = ImageTk.PhotoImage(self.settings_image)
@@ -72,10 +70,6 @@ class MenuPage:
         self.tasks_button.place(relx=0.53, rely=0.44)
         pywinstyles.set_opacity(self.tasks_button, color="#a60c09")
 
-        self.user_button = Button(self.studi_frame, image=self.user_image_tk, command=self.clicked, cursor="hand2",
-                                  bg="#8d0401", borderwidth=0, activebackground="#8d0401")
-        self.user_button.place(relx=0.85, rely=0.022)
-
         self.settings_button = Button(self.studi_frame, image=self.settings_image_tk, command=self.openSettings,
                                       cursor="hand2", bg="#8d0401", borderwidth=0, activebackground="#8d0401")
         self.settings_button.place(relx=0.9, rely=0.022)
@@ -92,9 +86,6 @@ class MenuPage:
 
         self.tasks_button.bind("<Enter>", self.tasks_on_enter)
         self.tasks_button.bind("<Leave>", self.tasks_on_leave)
-
-        self.user_button.bind("<Enter>", self.user_on_enter)
-        self.user_button.bind("<Leave>", self.user_on_leave)
 
         self.settings_button.bind("<Enter>", self.settings_on_enter)
         self.settings_button.bind("<Leave>", self.settings_on_leave)
@@ -128,16 +119,6 @@ class MenuPage:
         self.tasks_image = Image.open("Tasks.png")
         self.tasks_image_tk = ImageTk.PhotoImage(self.tasks_image)
         self.tasks_button.config(image=self.tasks_image_tk)
-
-    def user_on_enter(self, event):
-        self.user_image = Image.open("User_Hover.png")
-        self.user_image_tk = ImageTk.PhotoImage(self.user_image)
-        self.user_button.config(image=self.user_image_tk)
-
-    def user_on_leave(self, event):
-        self.user_image = Image.open("User.png")
-        self.user_image_tk = ImageTk.PhotoImage(self.user_image)
-        self.user_button.config(image=self.user_image_tk)
 
     def settings_on_enter(self, event):
         self.settings_image = Image.open("Settings_Hover.png")
@@ -191,8 +172,7 @@ class TimerPage:
                                  borderwidth=0)  # Creates a label, which holds the background image
         self.image_label.place(relwidth=1, relheight=1)  # Ensures that the label/image fits the entire screen
 
-        self.user_image = Image.open("User.png")
-        self.user_image_tk = ImageTk.PhotoImage(self.user_image)
+
 
         self.settings_image = Image.open("Settings.png")
         self.settings_image_tk = ImageTk.PhotoImage(self.settings_image)
@@ -203,12 +183,6 @@ class TimerPage:
 
         self.exit_image = Image.open("Exit.png")
         self.exit_image_Tk = ImageTk.PhotoImage(self.exit_image)
-
-        self.user_button = Button(self.studi_frame, image=self.user_image_tk, command=self.clicked, cursor="hand2",
-                                  bg="#8d0401", borderwidth=0, activebackground="#8d0401")
-        self.user_button.place(relx=0.85, rely=0.022)
-        self.user_button.bind("<Enter>", self.user_on_enter)
-        self.user_button.bind("<Leave>", self.user_on_leave)
 
         self.settings_button = Button(self.studi_frame, image=self.settings_image_tk, command=self.openSettings,
                                       cursor="hand2", bg="#8d0401", borderwidth=0, activebackground="#8d0401")
@@ -364,13 +338,22 @@ class TimerPage:
         self.is_paused = False
         self.end_time = 0
         self.time_remaining = 0
+        self.timer_id = None
+
+    def cancel_timer(self):
+        if self.timer_id:
+            self.studi_frame.after_cancel(self.timer_id)
+            self.timer_id = None
+
 
     def start_timer(self):
         if not self.is_timer_running:
+            self.cancel_timer()
+
             if self.is_paused:
                 self.is_timer_running = True
-                self.update_timer()
                 self.timer_status.configure(text="Timer Running")
+                self.update_timer()
             else:
                 self.time_remaining = int(self.minute_entry.get()) * 60
                 self.is_timer_running = True
@@ -378,18 +361,23 @@ class TimerPage:
                 self.update_timer()
 
     def start_short(self):
+        self.cancel_timer()
         self.time_remaining = int(5) * 60
         self.is_timer_running = True
+        self.is_paused = False
         self.timer_status.configure(text="Timer Running")
         self.update_timer()
 
     def start_long(self):
+        self.cancel_timer()
         self.time_remaining = int(10) * 60
         self.is_timer_running = True
+        self.is_paused = False
         self.timer_status.configure(text="Timer Running")
         self.update_timer()
 
     def pause_timer(self):
+        self.cancel_timer()
         self.is_timer_running = False
         self.is_paused = True
         self.timer_status.configure(text="Timer Paused")
@@ -402,7 +390,9 @@ class TimerPage:
         elif any(char in "abcdefghijklmnopqrstuvwxyz" for char in self.minute_entry.get().lower()):
             self.timer_status.configure(text="Cannot have letters, try again!")
         else:
+            self.cancel_timer()
             self.is_timer_running = False
+            self.is_paused = False
             self.time_remaining = int(self.minute_entry.get()) * 60
             minutes, seconds = divmod(self.time_remaining, 60)
             time_formatted = f"{minutes:02d}:{seconds:02d}"
@@ -415,21 +405,12 @@ class TimerPage:
             time_formatted = f"{minutes:02d}:{seconds:02d}"
             self.timer_label.config(text=time_formatted)
             self.time_remaining -= 1
-            self.studi_frame.after(1000, self.update_timer)
+            self.timer_id = self.studi_frame.after(1000, self.update_timer)
             print("HI!!")
         elif self.is_timer_running:
             self.timer_label.config(text="00:00")
             self.timer_status.configure(text="Timer Finished!")
-
-    def user_on_enter(self, event):
-        self.user_image = Image.open("User_Hover.png")
-        self.user_image_tk = ImageTk.PhotoImage(self.user_image)
-        self.user_button.config(image=self.user_image_tk)
-
-    def user_on_leave(self, event):
-        self.user_image = Image.open("User.png")
-        self.user_image_tk = ImageTk.PhotoImage(self.user_image)
-        self.user_button.config(image=self.user_image_tk)
+            self.is_paused = None
 
     def settings_on_enter(self, event):
         self.settings_image = Image.open("Settings_Hover.png")
@@ -499,9 +480,6 @@ class TasksPage:
                                  borderwidth=0)
         self.image_label.place(relwidth=1, relheight=1)
 
-        self.user_image = Image.open("User.png")
-        self.user_image_tk = ImageTk.PhotoImage(self.user_image)
-
         self.settings_image = Image.open("Settings.png")
         self.settings_image_tk = ImageTk.PhotoImage(self.settings_image)
 
@@ -512,11 +490,6 @@ class TasksPage:
         self.exit_image = Image.open("Exit.png")
         self.exit_image_Tk = ImageTk.PhotoImage(self.exit_image)
 
-        self.user_button = Button(self.studi_frame, image=self.user_image_tk, command=self.clicked, cursor="hand2",
-                                  bg="#8d0401", borderwidth=0, activebackground="#8d0401")
-        self.user_button.place(relx=0.85, rely=0.022)
-        self.user_button.bind("<Enter>", self.user_on_enter)
-        self.user_button.bind("<Leave>", self.user_on_leave)
 
         self.settings_button = Button(self.studi_frame, image=self.settings_image_tk, command=self.openSettings,
                                       cursor="hand2", bg="#8d0401", borderwidth=0, activebackground="#8d0401")
@@ -536,83 +509,6 @@ class TasksPage:
         pywinstyles.set_opacity(self.timer_button, color="#a60c09")
         self.timer_button.bind("<Enter>", self.timer_on_enter)
         self.timer_button.bind("<Leave>", self.timer_on_leave)
-
-        # subject_1 = "Subject 1"
-        # subject_2 = "Subject 2"
-        # subject_3 = "Subject 3"
-        # subject_4 = "Subject 4"
-        # subject_5 = "Subject 5"
-        #
-        # self.subject_1 = customtkinter.CTkButton(
-        #     self.studi_frame,
-        #     text=subject_1,
-        #     font=('Mont Heavy DEMO', 40),
-        #     height=100,
-        #     width=100,
-        #     text_color="black",
-        #     fg_color="#dbdbdb",
-        #     corner_radius=50,
-        #     bg_color="#a60c09",
-        #     hover_color="#c2c0c0"
-        # )
-        # self.subject_1.place(relx=0.03, rely=0.185)
-        # pywinstyles.set_opacity(self.subject_1, color="#a60c09")
-        #
-        # self.subject_2 = customtkinter.CTkButton(
-        #     self.studi_frame,
-        #     text=subject_2,
-        #     font=('Mont Heavy DEMO', 40),
-        #     height=100,
-        #     width=100,
-        #     text_color="black",
-        #     fg_color="#dbdbdb",
-        #     corner_radius=50,
-        #     bg_color="#a60c09",
-        #     hover_color="#c2c0c0")
-        # self.subject_2.place(relx=0.03, rely=0.345)
-        # pywinstyles.set_opacity(self.subject_2, color="#a60c09")
-        #
-        # self.subject_3 = customtkinter.CTkButton(
-        #     self.studi_frame,
-        #     text=subject_3,
-        #     font=('Mont Heavy DEMO', 40),
-        #     height=100,
-        #     width=100,
-        #     text_color="black",
-        #     fg_color="#dbdbdb",
-        #     corner_radius=50,
-        #     bg_color="#a60c09",
-        #     hover_color="#c2c0c0")
-        # self.subject_3.place(relx=0.03, rely=0.505)
-        # pywinstyles.set_opacity(self.subject_3, color="#a60c09")
-        #
-        # self.subject_4 = customtkinter.CTkButton(
-        #     self.studi_frame,
-        #     text=subject_4,
-        #     font=('Mont Heavy DEMO', 40),
-        #     height=100,
-        #     width=100,
-        #     text_color="black",
-        #     fg_color="#dbdbdb",
-        #     corner_radius=50,
-        #     bg_color="#a60c09",
-        #     hover_color="#c2c0c0")
-        # self.subject_4.place(relx=0.03, rely=0.665)
-        # pywinstyles.set_opacity(self.subject_4, color="#a60c09")
-        #
-        # self.subject_5 = customtkinter.CTkButton(
-        #     self.studi_frame,
-        #     text=subject_5,
-        #     font=('Mont Heavy DEMO', 40),
-        #     height=100,
-        #     width=100,
-        #     text_color="black",
-        #     fg_color="#dbdbdb",
-        #     corner_radius=50,
-        #     bg_color="#a60c09",
-        #     hover_color="#c2c0c0")
-        # self.subject_5.place(relx=0.03, rely=0.825)
-        # pywinstyles.set_opacity(self.subject_5, color="#a60c09")
 
         self.enter_tasks = customtkinter.CTkEntry(
             self.studi_frame,
@@ -713,14 +609,10 @@ class TasksPage:
         )
         self.tasks_list.place(anchor="center", relx=0.52, rely=0.42)
 
-        # self.list = ["Finish Homework", "Do project", "Sleep", "test123", "hi hello"]
-        # for item in self.list:
-        #     self.tasks_list.insert(END, item)
+        self.tasks_scrollbar = Scrollbar(self.studi_frame, highlightcolor="red")
+        self.tasks_scrollbar.place(relx=0.9, rely=0.225, relheight=0.4)
 
-        self.tasks_scrollbar = Scrollbar(self.studi_frame)
-        self.tasks_scrollbar.place(relx=0.9, rely=0.225, relheight=0.5)
-
-        self.tasks_list.config(yscrollcommand=self.tasks_scrollbar)
+        self.tasks_list.config(yscrollcommand=self.tasks_scrollbar.set)
         self.tasks_scrollbar.config(command=self.tasks_list.yview)
 
         self.save_button = customtkinter.CTkButton(
@@ -736,7 +628,17 @@ class TasksPage:
             hover_color="#9c5b06",
             command=self.save_list
         )
-        self.save_button.place(relx=0.05, rely=0.21)
+        self.save_button.place(relx=0.05, rely=0.20)
+
+        self.help_text = Label(
+            self.studi_frame,
+            text = "Enter your subject as the file name",
+            font = ('Mont Heavy DEMO',12),
+            bg = "#cf7908",
+            fg = "black"
+        )
+        self.help_text.place(relx=0.053,rely=0.2)
+        pywinstyles.set_opacity(self.help_text,color = "#cf7908")
 
         self.open_button = customtkinter.CTkButton(
             self.studi_frame,
@@ -752,6 +654,8 @@ class TasksPage:
             command=self.open_list
         )
         self.open_button.place(relx=0.05, rely=0.525)
+
+
 
     def add_task(self):
         global task
@@ -835,16 +739,6 @@ class TasksPage:
     def sub1(self):
         pass
 
-    def user_on_enter(self, event):
-        self.user_image = Image.open("User_Hover.png")
-        self.user_image_tk = ImageTk.PhotoImage(self.user_image)
-        self.user_button.config(image=self.user_image_tk)
-
-    def user_on_leave(self, event):
-        self.user_image = Image.open("User.png")
-        self.user_image_tk = ImageTk.PhotoImage(self.user_image)
-        self.user_button.config(image=self.user_image_tk)
-
     def settings_on_enter(self, event):
         self.settings_image = Image.open("Settings_Hover.png")
         self.settings_image_tk = ImageTk.PhotoImage(self.settings_image)
@@ -898,9 +792,6 @@ class SettingsPage:
 
         self.tasks_image = Image.open("Tasks.png")
         self.tasks_image_tk = ImageTk.PhotoImage(self.tasks_image)
-
-        self.user_image = Image.open("User.png")
-        self.user_image_tk = ImageTk.PhotoImage(self.user_image)
 
         self.settings_image = Image.open("Settings.png")
         self.settings_image_tk = ImageTk.PhotoImage(self.settings_image)
