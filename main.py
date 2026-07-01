@@ -9,6 +9,7 @@ from tkinter import filedialog
 import pickle
 import os
 
+from pyglet.window.key import LCOMMAND
 
 cwd = os.getcwd()
 
@@ -276,33 +277,19 @@ class TimerPage:
         )
         self.pause_button.place(relx=0.54, rely=0.645)
 
-        self.minute_entry = customtkinter.CTkEntry(
+        self.info_button = customtkinter.CTkButton(
             self.studi_frame,
-            font=('Mont Heavy DEMO', 25),
-            placeholder_text="Enter Time in Minutes",
-            width=480,
-            height=50,
-            corner_radius=0)
-        self.minute_entry.place(anchor="center", relx=0.475, rely=0.9)
-
-        self.enter_button = customtkinter.CTkButton(
-            self.studi_frame,
-            text="Enter",
-            font=('Mont Heavy DEMO', 30),
-            width=100,
-            height=70,
-            text_color="white",
-            fg_color="#870c09",
-            border_width=0,
-            border_spacing=10,
-            corner_radius=0,
-            border_color="#9d0905",
-            hover_color="#7D0502",
-            command=self.reset_timer
+            font=('Mont Heavy DEMO',30),
+            text = "?",
+            command = self.open_info,
+            border_width=-10,
+            width=80,
+            fg_color = "#750705",
+            hover_color= "#4d0100"
         )
-        self.enter_button.place(relx=0.605, rely=0.87)
+        self.info_button.place(relx=0.85,rely=0.295)
 
-        self.timer_label = Label(self.studi_frame, text="00:00:00", font=('Gaco Strong Demo', 125), fg="white",
+        self.timer_label = Label(self.studi_frame, text=timer_length+":00", font=('Gaco Strong Demo', 125), fg="white",
                                  bg="#a50c08")
         self.timer_label.place(anchor="center", relx=0.5, rely=0.5)
         pywinstyles.set_opacity(self.timer_label, color="#a50c08")
@@ -340,6 +327,50 @@ class TimerPage:
         self.time_remaining = 0
         self.timer_id = None
 
+    def open_info(self):
+        self.info_button.destroy()
+        self.exit_info_button = customtkinter.CTkButton(
+            self.studi_frame,
+            font=('Mont Heavy DEMO',30),
+            text = "X",
+            border_width=-10,
+            width=80,
+            fg_color = "#750705",
+            hover_color= "#4d0100",
+            command = self.close_help
+        )
+        self.exit_info_button.place(relx=0.85,rely=0.295)
+
+        self.help_text = customtkinter.CTkLabel(
+            self.studi_frame,
+            text = """Click on the Settings Button above to adjust the length of the Timer, Short Break and Long Break. 
+                   
+    Clicking the Short Break and Long Break buttons will automatically start the timer.
+                       
+    Default Lengths: 
+    Timer = 25 Minutes
+    Short Break = 5 Minutes
+    Long Break = 15 Minutes""",
+            font = ("Mont Heavy DEMO", 35),
+            width=20,
+        )
+        self.help_text.place(relx=0.05, rely=0.36)
+
+    def close_help(self):
+        self.info_button = customtkinter.CTkButton(
+            self.studi_frame,
+            font=('Mont Heavy DEMO',30),
+            text = "?",
+            command = self.open_info,
+            border_width=-10,
+            width=80,
+            fg_color = "#750705",
+            hover_color= "#4d0100"
+        )
+        self.info_button.place(relx=0.85,rely=0.295)
+        self.exit_info_button.destroy()
+        self.help_text.destroy()
+
     def cancel_timer(self):
         if self.timer_id:
             self.studi_frame.after_cancel(self.timer_id)
@@ -347,6 +378,7 @@ class TimerPage:
 
 
     def start_timer(self):
+        global timer_length
         if not self.is_timer_running:
             self.cancel_timer()
 
@@ -355,7 +387,7 @@ class TimerPage:
                 self.timer_status.configure(text="Timer Running")
                 self.update_timer()
             else:
-                self.time_remaining = int(self.minute_entry.get()) * 60
+                self.time_remaining = int(timer_length) * 60
                 self.is_timer_running = True
                 self.timer_status.configure(text="Timer Running")
                 self.update_timer()
@@ -812,13 +844,25 @@ class SettingsPage:
             self.studi_frame,
             placeholder_text="TIMER LENGTH (in minutes)",
             font=("Mont Heavy DEMO", 28),
-            width = 380,
+            width = 395,
             height=65,
             fg_color= "#c7c7c7",
             text_color="black",
             border_width=0,
+            justify = CENTER,
         )
         self.timer_entry.place(relx=0.4,rely=0.44)
+        self.timer_entry_button = customtkinter.CTkButton(
+            self.studi_frame,
+            text="APPLY",
+            corner_radius=40,
+            font=("Mont Heavy DEMO", 35),
+            fg_color="#56b873",
+            hover_color="#468c5b",
+            border_width=0,
+            command = self.timer_add
+        )
+        self.timer_entry_button.place(relx=0.464, rely=0.52)
 
         self.return_button = customtkinter.CTkButton(
             self.studi_frame,
@@ -837,6 +881,10 @@ class SettingsPage:
         self.exit_button = Button(self.studi_frame, image=self.exit_image_Tk, command=self.exit_program, cursor="hand2",
                                   bg="#8d0401", borderwidth=0, activebackground="#8d0401")
         self.exit_button.place(relx=0.95, rely=0.027)
+
+    def timer_add(self):
+        global timer_length
+        timer_length = self.timer_entry.get()
 
     def return_page(self):
         global current_page
