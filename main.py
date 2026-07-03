@@ -173,8 +173,6 @@ class TimerPage:
                                  borderwidth=0)  # Creates a label, which holds the background image
         self.image_label.place(relwidth=1, relheight=1)  # Ensures that the label/image fits the entire screen
 
-
-
         self.settings_image = Image.open("Settings.png")
         self.settings_image_tk = ImageTk.PhotoImage(self.settings_image)
 
@@ -209,7 +207,9 @@ class TimerPage:
             border_spacing=10,
             corner_radius=0,
             border_color="#9d0905",
-            hover_color="#8c0603")
+            hover_color="#8c0603",
+            command = self.start_normal_timer
+            )
         self.timer_button2.place(relx=0.21, rely=0.28)
 
         self.short_break_button = customtkinter.CTkButton(
@@ -327,6 +327,8 @@ class TimerPage:
         self.time_remaining = 0
         self.timer_id = None
 
+
+
     def open_info(self):
         self.info_button.destroy()
         self.exit_info_button = customtkinter.CTkButton(
@@ -343,9 +345,11 @@ class TimerPage:
 
         self.help_text = customtkinter.CTkLabel(
             self.studi_frame,
-            text = """Click on the Settings Button above to adjust the length of the Timer, Short Break and Long Break. 
+            text = """Click on the Settings Button above to 
+            adjust the length of the Timer, Short Break and Long Break.                
                    
-    Clicking the Short Break and Long Break buttons will automatically start the timer.
+    Clicking the Short Break and Long Break 
+    buttons will automatically start the timer.
                        
     Default Lengths: 
     Timer = 25 Minutes
@@ -353,8 +357,10 @@ class TimerPage:
     Long Break = 15 Minutes""",
             font = ("Mont Heavy DEMO", 35),
             width=20,
+            bg_color = "#ced6d0",
+            text_color= "black"
         )
-        self.help_text.place(relx=0.05, rely=0.36)
+        self.help_text.place(relx=0.176, rely=0.36)
 
     def close_help(self):
         self.info_button = customtkinter.CTkButton(
@@ -391,6 +397,15 @@ class TimerPage:
                 self.is_timer_running = True
                 self.timer_status.configure(text="Timer Running")
                 self.update_timer()
+
+    def start_normal_timer(self):
+        global timer_length
+        self.cancel_timer()
+        self.time_remaining = int(timer_length) * 60
+        self.is_timer_running = True
+        self.is_paused = False
+        self.timer_status.configure(text="Timer Running")
+        self.update_timer()
 
     def start_short(self):
         self.cancel_timer()
@@ -864,6 +879,70 @@ class SettingsPage:
         )
         self.timer_entry_button.place(relx=0.464, rely=0.52)
 
+        self.short_timer_text = customtkinter.CTkLabel(
+            self.studi_frame,
+            text = "Short Timer",
+            text_color="black",
+            font=("Mont Heavy DEMO", 38),
+            fg_color="#f6f6f6"
+        )
+        self.short_timer_text.place(relx=0.27,rely=0.585)
+        self.short_timer_entry = customtkinter.CTkEntry(
+            self.studi_frame,
+            placeholder_text="SHORT TIMER LENGTH (in minutes)",
+            font=("Mont Heavy DEMO", 28),
+            width = 395,
+            height=65,
+            fg_color= "#c7c7c7",
+            text_color="black",
+            border_width=0,
+            justify = CENTER,
+        )
+        self.short_timer_entry.place(relx=0.23,rely=0.65)
+        self.short_timer_entry_button = customtkinter.CTkButton(
+            self.studi_frame,
+            text="APPLY",
+            corner_radius=40,
+            font=("Mont Heavy DEMO", 35),
+            fg_color="#56b873",
+            hover_color="#468c5b",
+            border_width=0,
+            command = self.timer_add
+        )
+        self.short_timer_entry_button.place(relx=0.29, rely=0.725)
+
+        self.long_timer_text = customtkinter.CTkLabel(
+            self.studi_frame,
+            text = "Short Timer",
+            text_color="black",
+            font=("Mont Heavy DEMO", 38),
+            fg_color="#f6f6f6"
+        )
+        self.long_timer_text.place(relx=0.58,rely=0.585)
+        self.long_timer_entry = customtkinter.CTkEntry(
+            self.studi_frame,
+            placeholder_text="SHORT TIMER LENGTH (in minutes)",
+            font=("Mont Heavy DEMO", 28),
+            width = 395,
+            height=65,
+            fg_color= "#c7c7c7",
+            text_color="black",
+            border_width=0,
+            justify = CENTER,
+        )
+        self.long_timer_entry.place(relx=0.58,rely=0.65)
+        self.long_timer_entry_button = customtkinter.CTkButton(
+            self.studi_frame,
+            text="APPLY",
+            corner_radius=40,
+            font=("Mont Heavy DEMO", 35),
+            fg_color="#56b873",
+            hover_color="#468c5b",
+            border_width=0,
+            command = self.timer_add
+        )
+        self.long_timer_entry_button.place(relx=0.58, rely=0.725)
+
         self.return_button = customtkinter.CTkButton(
             self.studi_frame,
             text="←",
@@ -874,7 +953,6 @@ class SettingsPage:
             bg_color="#8f0401",
             hover_color="#750401",
             command = self.return_page
-
         )
         self.return_button.place(relx=0.02,rely=0.01)
 
