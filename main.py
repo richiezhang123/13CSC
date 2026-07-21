@@ -12,7 +12,9 @@ import os
 from pyglet.window.key import LCOMMAND
 
 cwd = os.getcwd()
-
+timer_length = "25"
+short_break_length = "5"
+long_break_length = "15"
 
 # pygame.mixer.init()
 # click_sound = pygame.mixer.Sound("mouse_click.mp3")
@@ -348,7 +350,7 @@ class TimerPage:
             text = """Click on the Settings Button above to 
             adjust the length of the Timer, Short Break and Long Break.                
                    
-    Clicking the Short Break and Long Break 
+    Clicking the different timer modes 
     buttons will automatically start the timer.
                        
     Default Lengths: 
@@ -384,7 +386,6 @@ class TimerPage:
 
 
     def start_timer(self):
-        global timer_length
         if not self.is_timer_running:
             self.cancel_timer()
 
@@ -399,7 +400,6 @@ class TimerPage:
                 self.update_timer()
 
     def start_normal_timer(self):
-        global timer_length
         self.cancel_timer()
         self.time_remaining = int(timer_length) * 60
         self.is_timer_running = True
@@ -409,7 +409,7 @@ class TimerPage:
 
     def start_short(self):
         self.cancel_timer()
-        self.time_remaining = int(5) * 60
+        self.time_remaining = int(short_break_length) * 60
         self.is_timer_running = True
         self.is_paused = False
         self.timer_status.configure(text="Timer Running")
@@ -417,7 +417,7 @@ class TimerPage:
 
     def start_long(self):
         self.cancel_timer()
-        self.time_remaining = int(10) * 60
+        self.time_remaining = int(long_break_length) * 60
         self.is_timer_running = True
         self.is_paused = False
         self.timer_status.configure(text="Timer Running")
@@ -430,21 +430,22 @@ class TimerPage:
         self.timer_status.configure(text="Timer Paused")
 
     def reset_timer(self):
-        if any(char in "!@#$%^&*()-_=+`~[]{}|;:'\",<.>?/\\" for char in self.minute_entry.get()):
-            self.timer_status.configure(text="Cannot have special characters, try again!")
-        elif self.minute_entry.get().strip() == "":
-            self.timer_status.configure(text="Please enter a number, try again!")
-        elif any(char in "abcdefghijklmnopqrstuvwxyz" for char in self.minute_entry.get().lower()):
-            self.timer_status.configure(text="Cannot have letters, try again!")
-        else:
-            self.cancel_timer()
-            self.is_timer_running = False
-            self.is_paused = False
-            self.time_remaining = int(self.minute_entry.get()) * 60
-            minutes, seconds = divmod(self.time_remaining, 60)
-            time_formatted = f"{minutes:02d}:{seconds:02d}"
-            self.timer_label.config(text=time_formatted)
-            self.timer_status.configure(text="")
+        pass
+        # if any(char in "!@#$%^&*()-_=+`~[]{}|;:'\",<.>?/\\" for char in self.minute_entry.get()):
+        #     self.timer_status.configure(text="Cannot have special characters, try again!")
+        # elif self.minute_entry.get().strip() == "":
+        #     self.timer_status.configure(text="Please enter a number, try again!")
+        # elif any(char in "abcdefghijklmnopqrstuvwxyz" for char in self.minute_entry.get().lower()):
+        #     self.timer_status.configure(text="Cannot have letters, try again!")
+        # else:
+        #     self.cancel_timer()
+        #     self.is_timer_running = False
+        #     self.is_paused = False
+        #     self.time_remaining = int(self.minute_entry.get()) * 60
+        #     minutes, seconds = divmod(self.time_remaining, 60)
+        #     time_formatted = f"{minutes:02d}:{seconds:02d}"
+        #     self.timer_label.config(text=time_formatted)
+        #     self.timer_status.configure(text="")
 
     def update_timer(self):
         if self.time_remaining > 0 and self.is_timer_running:
@@ -453,7 +454,6 @@ class TimerPage:
             self.timer_label.config(text=time_formatted)
             self.time_remaining -= 1
             self.timer_id = self.studi_frame.after(1000, self.update_timer)
-            print("HI!!")
         elif self.is_timer_running:
             self.timer_label.config(text="00:00")
             self.timer_status.configure(text="Timer Finished!")
@@ -715,21 +715,19 @@ class TasksPage:
 
 
     def add_task(self):
-        global task
-        task = self.enter_tasks.get()
-        if task.strip() == "":
+        if self.enter_tasks.get().strip() == "":
             pass
         else:
-            self.tasks_list.insert(END,"• " + task)
+            self.tasks_list.insert(END,"• " + self.enter_tasks.get())
             self.enter_tasks.delete(0,END)
 
     def edit_task(self):
-        if task.strip() == "":
+        if self.enter_tasks.get().strip() == "":
             pass
         else:
             for item in self.tasks_list.curselection():
                 self.tasks_list.delete(item)
-                self.tasks_list.insert(item,task)
+                self.tasks_list.insert(item,"• " + self.enter_tasks.get())
 
     def delete_task(self):
         self.tasks_list.delete(ANCHOR)
@@ -849,24 +847,24 @@ class SettingsPage:
 
         self.timer_text = customtkinter.CTkLabel(
             self.studi_frame,
-            text = "Timer",
+            text="Timer",
             text_color="black",
             font=("Mont Heavy DEMO", 38),
             fg_color="#f6f6f6"
         )
-        self.timer_text.place(relx=0.47,rely=0.38)
+        self.timer_text.place(relx=0.47, rely=0.38)
         self.timer_entry = customtkinter.CTkEntry(
             self.studi_frame,
-            placeholder_text="TIMER LENGTH (in minutes)",
+            placeholder_text="LENGTH (in minutes)",
             font=("Mont Heavy DEMO", 28),
-            width = 395,
+            width=395,
             height=65,
-            fg_color= "#c7c7c7",
+            fg_color="#c7c7c7",
             text_color="black",
             border_width=0,
-            justify = CENTER,
+            justify=CENTER,
         )
-        self.timer_entry.place(relx=0.4,rely=0.44)
+        self.timer_entry.place(relx=0.4, rely=0.44)
         self.timer_entry_button = customtkinter.CTkButton(
             self.studi_frame,
             text="APPLY",
@@ -875,30 +873,30 @@ class SettingsPage:
             fg_color="#56b873",
             hover_color="#468c5b",
             border_width=0,
-            command = self.timer_add
+            command=self.timer_add
         )
         self.timer_entry_button.place(relx=0.464, rely=0.52)
 
         self.short_timer_text = customtkinter.CTkLabel(
             self.studi_frame,
-            text = "Short Timer",
+            text="Short Timer",
             text_color="black",
             font=("Mont Heavy DEMO", 38),
             fg_color="#f6f6f6"
         )
-        self.short_timer_text.place(relx=0.27,rely=0.585)
+        self.short_timer_text.place(relx=0.27, rely=0.585)
         self.short_timer_entry = customtkinter.CTkEntry(
             self.studi_frame,
-            placeholder_text="SHORT TIMER LENGTH (in minutes)",
+            placeholder_text="LENGTH (in minutes)",
             font=("Mont Heavy DEMO", 28),
-            width = 395,
+            width=395,
             height=65,
-            fg_color= "#c7c7c7",
+            fg_color="#c7c7c7",
             text_color="black",
             border_width=0,
-            justify = CENTER,
+            justify=CENTER,
         )
-        self.short_timer_entry.place(relx=0.23,rely=0.65)
+        self.short_timer_entry.place(relx=0.23, rely=0.65)
         self.short_timer_entry_button = customtkinter.CTkButton(
             self.studi_frame,
             text="APPLY",
@@ -907,30 +905,30 @@ class SettingsPage:
             fg_color="#56b873",
             hover_color="#468c5b",
             border_width=0,
-            command = self.timer_add
+            command=self.short_timer_add
         )
         self.short_timer_entry_button.place(relx=0.29, rely=0.725)
 
         self.long_timer_text = customtkinter.CTkLabel(
             self.studi_frame,
-            text = "Short Timer",
+            text="Long Timer",
             text_color="black",
             font=("Mont Heavy DEMO", 38),
             fg_color="#f6f6f6"
         )
-        self.long_timer_text.place(relx=0.58,rely=0.585)
+        self.long_timer_text.place(relx=0.62, rely=0.585)
         self.long_timer_entry = customtkinter.CTkEntry(
             self.studi_frame,
-            placeholder_text="SHORT TIMER LENGTH (in minutes)",
+            placeholder_text="LENGTH (in minutes)",
             font=("Mont Heavy DEMO", 28),
-            width = 395,
+            width=395,
             height=65,
-            fg_color= "#c7c7c7",
+            fg_color="#c7c7c7",
             text_color="black",
             border_width=0,
-            justify = CENTER,
+            justify=CENTER,
         )
-        self.long_timer_entry.place(relx=0.58,rely=0.65)
+        self.long_timer_entry.place(relx=0.5735, rely=0.65)
         self.long_timer_entry_button = customtkinter.CTkButton(
             self.studi_frame,
             text="APPLY",
@@ -939,9 +937,16 @@ class SettingsPage:
             fg_color="#56b873",
             hover_color="#468c5b",
             border_width=0,
-            command = self.timer_add
+            command=self.long_timer_add
         )
-        self.long_timer_entry_button.place(relx=0.58, rely=0.725)
+        self.long_timer_entry_button.place(relx=0.64, rely=0.725)
+
+        self.error_text = customtkinter.CTkLabel(
+            self.studi_frame,
+            text="",
+            text_color="red",
+            font=("Mont Heavy DEMO", 35)
+        )
 
         self.return_button = customtkinter.CTkButton(
             self.studi_frame,
@@ -961,8 +966,52 @@ class SettingsPage:
         self.exit_button.place(relx=0.95, rely=0.027)
 
     def timer_add(self):
-        global timer_length
-        timer_length = self.timer_entry.get()
+        if any(char in "!@#$%^&*()-_=+`~[]{}|;:'\",<.>?/\\" for char in self.timer_entry.get()):
+            self.error_text.place(relx=0.31, rely=0.825)
+            self.error_text.configure(text="Cannot have special characters, try again!",text_color = "red")
+        elif self.timer_entry.get().strip() == "":
+            self.error_text.place(relx=0.35, rely=0.825)
+            self.error_text.configure(text="Please enter a number, try again!",text_color = "red")
+        elif any(char in "abcdefghijklmnopqrstuvwxyz" for char in self.timer_entry.get().lower()):
+            self.error_text.place(relx=0.36, rely=0.825)
+            self.error_text.configure(text="Cannot have letters, try again!",text_color = "red")
+        else:
+            global timer_length
+            timer_length = self.timer_entry.get()
+            self.error_text.configure(text="Main Timer Time Applied!", text_color = "green")
+            self.error_text.place(relx=0.39, rely=0.825)
+
+    def short_timer_add(self):
+        if any(char in "!@#$%^&*()-_=+`~[]{}|;:'\",<.>?/\\" for char in self.short_timer_entry.get()):
+            self.error_text.place(relx=0.31, rely=0.825)
+            self.error_text.configure(text="Cannot have special characters, try again!",text_color = "red")
+        elif self.short_timer_entry.get().strip() == "":
+            self.error_text.place(relx=0.35, rely=0.825)
+            self.error_text.configure(text="Please enter a number, try again!",text_color = "red")
+        elif any(char in "abcdefghijklmnopqrstuvwxyz" for char in self.short_timer_entry.get().lower()):
+            self.error_text.place(relx=0.36, rely=0.825)
+            self.error_text.configure(text="Cannot have letters, try again!",text_color = "red")
+        else:
+            global short_break_length
+            short_break_length = self.short_timer_entry.get()
+            self.error_text.configure(text="Short Break Time Applied!", text_color = "green")
+            self.error_text.place(relx=0.39, rely=0.825)
+
+    def long_timer_add(self):
+        if any(char in "!@#$%^&*()-_=+`~[]{}|;:'\",<.>?/\\" for char in self.long_timer_entry.get()):
+            self.error_text.place(relx=0.31, rely=0.825)
+            self.error_text.configure(text="Cannot have special characters, try again!",text_color = "red")
+        elif self.long_timer_entry.get().strip() == "":
+            self.error_text.place(relx=0.35, rely=0.825)
+            self.error_text.configure(text="Please enter a number, try again!",text_color = "red")
+        elif any(char in "abcdefghijklmnopqrstuvwxyz" for char in self.long_timer_entry.get().lower()):
+            self.error_text.place(relx=0.36, rely=0.825)
+            self.error_text.configure(text="Cannot have letters, try again!",text_color = "red")
+        else:
+            global long_break_length
+            long_break_length = self.long_timer_entry.get()
+            self.error_text.configure(text="Long Break Time Applied!", text_color = "green")
+            self.error_text.place(relx=0.39, rely=0.825)
 
     def return_page(self):
         global current_page
