@@ -3,7 +3,6 @@ from tkinter.font import Font
 from PIL import Image, ImageTk
 import customtkinter
 import pywinstyles
-# import pygame
 import pyglet
 from tkinter import filedialog
 import pickle
@@ -27,12 +26,6 @@ pyglet.font.add_file("Nexa.ttf")
 pyglet.font.add_file("AltoneTrial-Bold.ttf")
 pyglet.font.add_file("Mont Heavy.otf")
 pyglet.font.add_file("Etna.otf")
-
-
-# tasks_font = Font(family="Mont Heavy DEMO", size = 35)
-
-
-
 
 class MenuPage:
     def __init__(self, parent):
@@ -96,8 +89,6 @@ class MenuPage:
         self.exit_button.bind("<Enter>", self.exit_on_enter)
         self.exit_button.bind("<Leave>", self.exit_on_leave)
 
-    def clicked(self):
-        pass
 
     def exit_program(self):
         self.studi_frame.destroy()
@@ -301,19 +292,19 @@ class TimerPage:
         self.timer_status.place(anchor="center", relx=0.5, rely=0.585)
         pywinstyles.set_opacity(self.timer_status, color="#a60c09")
 
-        self.reset_button = customtkinter.CTkButton(
-            self.studi_frame,
-            text="↻",
-            font=('Gaco Strong Demo', 50),
-            text_color="white",
-            fg_color="#a30b08",
-            border_width=0,
-            border_spacing=10,
-            corner_radius=0,
-            border_color="#9d0905",
-            hover_color="#8c0603",
-            command=self.reset_timer)
-        self.reset_button.place(relx=0.78, rely=0.38)
+        # self.reset_button = customtkinter.CTkButton(
+        #     self.studi_frame,
+        #     text="↻",
+        #     font=('Gaco Strong Demo', 50),
+        #     text_color="white",
+        #     fg_color="#a30b08",
+        #     border_width=0,
+        #     border_spacing=10,
+        #     corner_radius=0,
+        #     border_color="#9d0905",
+        #     hover_color="#8c0603",
+        #     command=self.reset_timer)
+        # self.reset_button.place(relx=0.78, rely=0.38)
 
         self.tasks_button = Button(self.studi_frame, image=self.tasks_image_tk, command=self.openTasks, cursor="hand2",
                                    bg="#a60c09", borderwidth=0, activebackground="#a60c09")
@@ -359,7 +350,7 @@ class TimerPage:
     Long Break = 15 Minutes""",
             font = ("Mont Heavy DEMO", 35),
             width=20,
-            bg_color = "#ced6d0",
+            bg_color = "white",
             text_color= "black"
         )
         self.help_text.place(relx=0.176, rely=0.36)
@@ -503,10 +494,6 @@ class TimerPage:
         SettingsPage(root)
 
 
-    def clicked(self):
-        # click_sound.play()
-        pass
-
     def exit_program(self):
         self.studi_frame.destroy()
         exit()
@@ -644,18 +631,6 @@ class TasksPage:
         )
         self.tasks_list.place(anchor="center", relx=0.52, rely=0.42)
 
-        self.tasks_list = Listbox(
-            self.studi_frame,
-            font=('Mont Heavy DEMO', 22),
-            width=50,
-            bg="#edebf2",
-            bd=0,
-            highlightthickness=0,
-            selectbackground="#8e8d8f",
-            activestyle="none"
-        )
-        self.tasks_list.place(anchor="center", relx=0.52, rely=0.42)
-
         self.tasks_scrollbar = Scrollbar(self.studi_frame, highlightcolor="red")
         self.tasks_scrollbar.place(relx=0.7679, rely=0.225, relheight=0.4)
 
@@ -677,25 +652,25 @@ class TasksPage:
         )
         self.save_button.place(relx=0.05, rely=0.20)
 
-        self.help_text = Label(
-            self.studi_frame,
-            text = "Enter your subject",
-            font = ('Mont Heavy DEMO',22),
-            bg = "#b56904",
-            fg = "black"
-        )
-        self.help_text.place(relx=0.058,rely=0.38)
-        pywinstyles.set_opacity(self.help_text,color = "#b56904")
-
-        self.help_text2 = Label(
-            self.studi_frame,
-            text = "as the file name",
-            font = ('Mont Heavy DEMO',22),
-            bg = "#b56904",
-            fg = "black"
-        )
-        self.help_text2.place(relx=0.066,rely=0.412)
-        pywinstyles.set_opacity(self.help_text2,color = "#b56904")
+        # self.help_text = Label(
+        #     self.studi_frame,
+        #     text = "Enter your subject",
+        #     font = ('Mont Heavy DEMO',22),
+        #     bg = "#b56904",
+        #     fg = "black"
+        # )
+        # self.help_text.place(relx=0.058,rely=0.38)
+        # pywinstyles.set_opacity(self.help_text,color = "#b56904")
+        #
+        # self.help_text2 = Label(
+        #     self.studi_frame,
+        #     text = "as the file name",
+        #     font = ('Mont Heavy DEMO',22),
+        #     bg = "#b56904",
+        #     fg = "black"
+        # )
+        # self.help_text2.place(relx=0.066,rely=0.412)
+        # pywinstyles.set_opacity(self.help_text2,color = "#b56904")
 
         self.open_button = customtkinter.CTkButton(
             self.studi_frame,
@@ -711,15 +686,11 @@ class TasksPage:
             command=self.open_list
         )
         self.open_button.place(relx=0.05, rely=0.525)
-
-
-
     def add_task(self):
         if self.enter_tasks.get().strip() == "":
             pass
         else:
             self.tasks_list.insert(END,"• " + self.enter_tasks.get())
-            self.enter_tasks.delete(0,END)
 
     def edit_task(self):
         if self.enter_tasks.get().strip() == "":
@@ -729,12 +700,13 @@ class TasksPage:
                 self.tasks_list.delete(item)
                 self.tasks_list.insert(item,"• " + self.enter_tasks.get())
 
+
     def delete_task(self):
         self.tasks_list.delete(ANCHOR)
 
     def complete_task(self):
         self.tasks_list.itemconfig(
-            self.tasks_list.curselection(),fg="#dedede"
+            self.tasks_list.curselection(),fg="#bab6b6"
         )
         self.tasks_list.selection_clear(0,END)
 
@@ -772,12 +744,7 @@ class TasksPage:
             for item in tasks:
                 self.tasks_list.insert(END,item)
 
-    def clicked(self):
-        # click_sound.play()
-        pass
-
     def openTimer(self):
-        # click_sound.play()
         self.studi_frame.destroy()
         TimerPage(root)
 
@@ -790,9 +757,6 @@ class TasksPage:
     def exit_program(self):
         self.studi_frame.destroy()
         exit()
-
-    def sub1(self):
-        pass
 
     def settings_on_enter(self, event):
         self.settings_image = Image.open("Settings_Hover.png")
@@ -853,6 +817,8 @@ class SettingsPage:
             fg_color="#f6f6f6"
         )
         self.timer_text.place(relx=0.47, rely=0.38)
+        pywinstyles.set_opacity(self.timer_text, color="#f6f6f6")
+
         self.timer_entry = customtkinter.CTkEntry(
             self.studi_frame,
             placeholder_text="LENGTH (in minutes)",
@@ -885,6 +851,9 @@ class SettingsPage:
             fg_color="#f6f6f6"
         )
         self.short_timer_text.place(relx=0.27, rely=0.585)
+        pywinstyles.set_opacity(self.short_timer_text, color="#f6f6f6")
+
+
         self.short_timer_entry = customtkinter.CTkEntry(
             self.studi_frame,
             placeholder_text="LENGTH (in minutes)",
@@ -917,6 +886,8 @@ class SettingsPage:
             fg_color="#f6f6f6"
         )
         self.long_timer_text.place(relx=0.62, rely=0.585)
+        pywinstyles.set_opacity(self.long_timer_text, color="#f6f6f6")
+
         self.long_timer_entry = customtkinter.CTkEntry(
             self.studi_frame,
             placeholder_text="LENGTH (in minutes)",
@@ -980,6 +951,7 @@ class SettingsPage:
             timer_length = self.timer_entry.get()
             self.error_text.configure(text="Main Timer Time Applied!", text_color = "green")
             self.error_text.place(relx=0.39, rely=0.825)
+            self.timer_entry.delete(0,END)
 
     def short_timer_add(self):
         if any(char in "!@#$%^&*()-_=+`~[]{}|;:'\",<.>?/\\" for char in self.short_timer_entry.get()):
@@ -996,6 +968,7 @@ class SettingsPage:
             short_break_length = self.short_timer_entry.get()
             self.error_text.configure(text="Short Break Time Applied!", text_color = "green")
             self.error_text.place(relx=0.39, rely=0.825)
+            self.short_timer_entry.delete(0,END)
 
     def long_timer_add(self):
         if any(char in "!@#$%^&*()-_=+`~[]{}|;:'\",<.>?/\\" for char in self.long_timer_entry.get()):
@@ -1012,6 +985,7 @@ class SettingsPage:
             long_break_length = self.long_timer_entry.get()
             self.error_text.configure(text="Long Break Time Applied!", text_color = "green")
             self.error_text.place(relx=0.39, rely=0.825)
+            self.long_timer_entry.delete(0,END)
 
     def return_page(self):
         global current_page
