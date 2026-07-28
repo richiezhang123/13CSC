@@ -11,27 +11,23 @@ import os
 from pyglet.window.key import LCOMMAND
 
 cwd = os.getcwd()
+
+#Default timer lengths which can be customised later
 timer_length = "25"
 short_break_length = "5"
 long_break_length = "15"
 
-# pygame.mixer.init()
-# click_sound = pygame.mixer.Sound("mouse_click.mp3")
-
-
+#Import custom fonts
 pyglet.options['win32_gdi_font'] = True
-
 pyglet.font.add_file("Gaco_Strong_Font_Demo.otf")
-pyglet.font.add_file("Nexa.ttf")
-pyglet.font.add_file("AltoneTrial-Bold.ttf")
 pyglet.font.add_file("Mont Heavy.otf")
-pyglet.font.add_file("Etna.otf")
 
 class MenuPage:
     def __init__(self, parent):
         self.window_width = parent.winfo_screenwidth()
         self.window_height = parent.winfo_screenheight()
 
+        #Load and resize image to fit the screen
         self.background_image = Image.open("Menu.png")
         self.background_image = self.background_image.resize((self.window_width, self.window_height), Image.LANCZOS)
         self.background_image_tk = ImageTk.PhotoImage(self.background_image)
@@ -39,10 +35,10 @@ class MenuPage:
         self.studi_frame = Frame(parent)
         self.studi_frame.pack(fill=BOTH, expand=TRUE)
 
-        self.image_label = Label(self.studi_frame, image=self.background_image_tk,
-                                 borderwidth=0)  # Creates a label, which holds the background image
-        self.image_label.place(relwidth=1, relheight=1)  # Ensures that the label/image fits the entire screen
+        self.image_label = Label(self.studi_frame, image=self.background_image_tk, borderwidth=0)
+        self.image_label.place(relwidth=1, relheight=1)
 
+        #Load button images
         self.timer_image = Image.open("Timer.png")
         self.timer_image_tk = ImageTk.PhotoImage(self.timer_image)
 
@@ -56,6 +52,7 @@ class MenuPage:
         self.exit_image = Image.open("Exit.png")
         self.exit_image_Tk = ImageTk.PhotoImage(self.exit_image)
 
+        #Create buttons
         self.timer_button = Button(self.studi_frame, image=self.timer_image_tk, command=self.openTimer, bg="#a60c09",
                                    activebackground="#a60c09", cursor="hand2", borderwidth=0, )
         self.timer_button.place(relx=0.27, rely=0.44)
@@ -74,6 +71,7 @@ class MenuPage:
                                   bg="#8d0401", borderwidth=0, activebackground="#8d0401")
         self.exit_button.place(relx=0.95, rely=0.027)
 
+        #Bind hover effects
         self.timer_button.bind("<Enter>", self.timer_on_enter)
         self.timer_button.bind("<Leave>", self.timer_on_leave)
 
@@ -94,67 +92,70 @@ class MenuPage:
         self.studi_frame.destroy()
         exit()
 
-    def timer_on_enter(self, event):
+    #Hover effect functions
+    def timer_on_enter(self, event): #Swap image on hover
         self.timer_image = Image.open("Timer_Hover.png")
         self.timer_image_tk = ImageTk.PhotoImage(self.timer_image)
         self.timer_button.config(image=self.timer_image_tk)
 
-    def timer_on_leave(self, event):
+    def timer_on_leave(self, event): #Restore image when the user stops hovering
         self.timer_image = Image.open("Timer.png")
         self.timer_image_tk = ImageTk.PhotoImage(self.timer_image)
         self.timer_button.config(image=self.timer_image_tk)
 
-    def tasks_on_enter(self, event):
+    def tasks_on_enter(self, event): #Swap image on hover
         self.tasks_image = Image.open("Tasks_Hover.png")
         self.tasks_image_tk = ImageTk.PhotoImage(self.tasks_image)
         self.tasks_button.config(image=self.tasks_image_tk)
 
-    def tasks_on_leave(self, event):
+    def tasks_on_leave(self, event):#Restore image when the user stops hovering
         self.tasks_image = Image.open("Tasks.png")
         self.tasks_image_tk = ImageTk.PhotoImage(self.tasks_image)
         self.tasks_button.config(image=self.tasks_image_tk)
 
-    def settings_on_enter(self, event):
+    def settings_on_enter(self, event): #Swap image on hover
         self.settings_image = Image.open("Settings_Hover.png")
         self.settings_image_tk = ImageTk.PhotoImage(self.settings_image)
         self.settings_button.config(image=self.settings_image_tk)
 
-    def settings_on_leave(self, event):
+    def settings_on_leave(self, event):#Restore image when the user stops hovering
         self.settings_image = Image.open("Settings.png")
         self.settings_image_tk = ImageTk.PhotoImage(self.settings_image)
         self.settings_button.config(image=self.settings_image_tk)
 
-    def exit_on_enter(self, event):
+    def exit_on_enter(self, event):  #Swap image on hover
         self.exit_image = Image.open("Exit_Hover.png")
         self.exit_image_tk = ImageTk.PhotoImage(self.exit_image)
         self.exit_button.config(image=self.exit_image_tk)
 
-    def exit_on_leave(self, event):
+    def exit_on_leave(self, event):#Restore image when the user stops hovering
         self.exit_image = Image.open("Exit.png")
         self.exit_image_tk = ImageTk.PhotoImage(self.exit_image)
         self.exit_button.config(image=self.exit_image_tk)
 
+    #Functions to open other pages
     def openTimer(self):
-        # click_sound.play()
-        self.studi_frame.destroy()
-        TimerPage(root)
+        self.studi_frame.destroy() #Destroys current page
+        TimerPage(root) #Opens Timer page
 
     def openTasks(self):
-        # click_sound.play()
-        self.studi_frame.destroy()
-        TasksPage(root)
+        self.studi_frame.destroy() #Destroys current page
+        TasksPage(root) #Opens Tasks page
 
     def openSettings(self):
+        # Tracks which page opened the settings page in a global variable to allow the user to return to the correct page
         global current_page
         current_page = "Menu"
-        self.studi_frame.destroy()
-        SettingsPage(root)
+
+        self.studi_frame.destroy() #Destroys current page
+        SettingsPage(root) #Opens Settings  page
 
 class TimerPage:
     def __init__(self, parent):
         self.window_width = parent.winfo_screenwidth()
         self.window_height = parent.winfo_screenheight()
 
+        #Load and resize image to fit the screen
         self.background_image = Image.open("Timer_Page.png")
         self.background_image = self.background_image.resize((self.window_width, self.window_height), Image.LANCZOS)
         self.background_image_tk = ImageTk.PhotoImage(self.background_image)
@@ -166,6 +167,7 @@ class TimerPage:
                                  borderwidth=0)  # Creates a label, which holds the background image
         self.image_label.place(relwidth=1, relheight=1)  # Ensures that the label/image fits the entire screen
 
+        #Load button images
         self.settings_image = Image.open("Settings.png")
         self.settings_image_tk = ImageTk.PhotoImage(self.settings_image)
 
@@ -176,6 +178,7 @@ class TimerPage:
         self.exit_image = Image.open("Exit.png")
         self.exit_image_Tk = ImageTk.PhotoImage(self.exit_image)
 
+        #Creates buttons
         self.settings_button = Button(self.studi_frame, image=self.settings_image_tk, command=self.openSettings,
                                       cursor="hand2", bg="#8d0401", borderwidth=0, activebackground="#8d0401")
         self.settings_button.place(relx=0.9, rely=0.022)
@@ -282,6 +285,7 @@ class TimerPage:
         )
         self.info_button.place(relx=0.85,rely=0.295)
 
+        #Creates the label that displays the timer with an initial value of 25 minutes
         self.timer_label = Label(self.studi_frame, text=timer_length+":00", font=('Gaco Strong Demo', 125), fg="white",
                                  bg="#a50c08")
         self.timer_label.place(anchor="center", relx=0.5, rely=0.5)
@@ -314,16 +318,16 @@ class TimerPage:
         self.tasks_button.bind("<Enter>", self.tasks_on_enter)
         self.tasks_button.bind("<Leave>", self.tasks_on_leave)
 
-        self.is_timer_running = False
+        #Sets default values to variables
+        self.is_timer_running = False #Timer is not running initially
         self.is_paused = False
-        self.end_time = 0
         self.time_remaining = 0
         self.timer_id = None
-        self.current_mode = "main"
+        self.current_mode = "main" #Default mode is the main timer
 
-
+    #Function to open the info menu
     def open_info(self):
-        self.info_button.destroy()
+        self.info_button.destroy() #Destroys the info button and replaces it with the exit button
         self.exit_info_button = customtkinter.CTkButton(
             self.studi_frame,
             font=('Mont Heavy DEMO',30),
@@ -336,6 +340,7 @@ class TimerPage:
         )
         self.exit_info_button.place(relx=0.85,rely=0.295)
 
+        #Displays the help text
         self.help_text = customtkinter.CTkLabel(
             self.studi_frame,
             text = """Click on the Settings Button above to 
@@ -356,6 +361,7 @@ class TimerPage:
         self.help_text.place(relx=0.176, rely=0.36)
 
     def close_help(self):
+        #Opens the info button, replacing the exit button
         self.info_button = customtkinter.CTkButton(
             self.studi_frame,
             font=('Mont Heavy DEMO',30),
@@ -367,24 +373,27 @@ class TimerPage:
             hover_color= "#4d0100"
         )
         self.info_button.place(relx=0.85,rely=0.295)
-        self.exit_info_button.destroy()
-        self.help_text.destroy()
+        self.exit_info_button.destroy() #Destroys the exit button and is replaced with the info button
+        self.help_text.destroy() #Destroys the help text
 
     def cancel_timer(self):
+        #Cancels the after() loop in order to stop the timer counting down
         if self.timer_id:
             self.studi_frame.after_cancel(self.timer_id)
             self.timer_id = None
 
-
     def start_timer(self):
+        #Starts the timer only if it is not running
         if not self.is_timer_running:
             self.cancel_timer()
 
+            #If the timer was paused, and resumed, continue the timer from where it was left off
             if self.is_paused:
                 self.is_timer_running = True
                 self.timer_status.configure(text="Timer Running")
                 self.update_timer()
             else:
+                #Sets the time remanining based on the current mode
                 if self.current_mode == "main":
                     self.time_remaining = int(timer_length) * 60
                 elif self.current_mode == "short":
@@ -397,45 +406,47 @@ class TimerPage:
                 self.update_timer()
 
     def start_main(self):
-        self.current_mode = "main"
+        self.current_mode = "main" #Sets current mode to the main timer
         self.cancel_timer()
         self.time_remaining = int(timer_length) * 60
-        self.is_timer_running = False
+        self.is_timer_running = False #Ensures the timer does not run instantly
         self.is_paused = False
         self.timer_status.configure(text="Press ▶ To Start")
-        minutes, seconds = divmod(self.time_remaining, 60)
+        minutes, seconds = divmod(self.time_remaining, 60) #Displays the time remaining
         time_formatted = f"{minutes:02d}:{seconds:02d}"
         self.timer_label.config(text=time_formatted)
 
     def start_short(self):
-        self.current_mode = "short"
+        self.current_mode = "short" #Sets current mode to the short break
         self.cancel_timer()
         self.time_remaining = int(short_break_length) * 60
-        self.is_timer_running = False
+        self.is_timer_running = False  #Ensures the timer does not run instantly
         self.is_paused = False
         self.timer_status.configure(text="Press ▶ To Start")
-        minutes, seconds = divmod(self.time_remaining, 60)
+        minutes, seconds = divmod(self.time_remaining, 60) #Displays the time remaining
         time_formatted = f"{minutes:02d}:{seconds:02d}"
         self.timer_label.config(text=time_formatted)
 
     def start_long(self):
-        self.current_mode = "long"
+        self.current_mode = "long"  #Sets current mode to the long break
         self.cancel_timer()
         self.time_remaining = int(long_break_length) * 60
-        self.is_timer_running = False
+        self.is_timer_running = False #Ensures the timer does not run instantly
         self.is_paused = False
         self.timer_status.configure(text="Press ▶ To Start")
-        minutes, seconds = divmod(self.time_remaining, 60)
+        minutes, seconds = divmod(self.time_remaining, 60) #Displays the time remaining
         time_formatted = f"{minutes:02d}:{seconds:02d}"
         self.timer_label.config(text=time_formatted)
 
     def pause_timer(self):
+        #Pauses the timer and stops it from running
         self.cancel_timer()
         self.is_timer_running = False
         self.is_paused = True
         self.timer_status.configure(text="Timer Paused")
 
     def reset_timer(self):
+        #Reset to the inital timer length depending on which mode is selected
         if self.current_mode == "main":
             self.start_main()
         elif self.current_mode == "short":
@@ -444,70 +455,76 @@ class TimerPage:
             self.start_long()
 
     def update_timer(self):
+        #Updates the timer to decrease by 1 each second
         if self.time_remaining > 0 and self.is_timer_running:
             minutes, seconds = divmod(self.time_remaining, 60)
             time_formatted = f"{minutes:02d}:{seconds:02d}"
             self.timer_label.config(text=time_formatted)
-            self.time_remaining -= 1
-            self.timer_id = self.studi_frame.after(1000, self.update_timer)
+            self.time_remaining -= 1 #Decreases time remaining to display the correct time
+            self.timer_id = self.studi_frame.after(1000, self.update_timer) #Saves the timer id so that it can be cancelled
         elif self.is_timer_running:
+            #Timer has finished
             self.timer_label.config(text="00:00")
             self.timer_status.configure(text="Timer Finished!")
             self.is_paused = None
 
-    def settings_on_enter(self, event):
+    #Hover effect functions
+    def settings_on_enter(self, event):  # Swap image on hover
         self.settings_image = Image.open("Settings_Hover.png")
         self.settings_image_tk = ImageTk.PhotoImage(self.settings_image)
         self.settings_button.config(image=self.settings_image_tk)
 
-    def settings_on_leave(self, event):
+    def settings_on_leave(self, event):  # Restore image when the user stops hovering
         self.settings_image = Image.open("Settings.png")
         self.settings_image_tk = ImageTk.PhotoImage(self.settings_image)
         self.settings_button.config(image=self.settings_image_tk)
 
-    def exit_on_enter(self, event):
+    def exit_on_enter(self, event):  # Swap image on hover
         self.exit_image = Image.open("Exit_Hover.png")
         self.exit_image_tk = ImageTk.PhotoImage(self.exit_image)
         self.exit_button.config(image=self.exit_image_tk)
 
-    def exit_on_leave(self, event):
+    def exit_on_leave(self, event):  # Restore image when the user stops hovering
         self.exit_image = Image.open("Exit.png")
         self.exit_image_tk = ImageTk.PhotoImage(self.exit_image)
         self.exit_button.config(image=self.exit_image_tk)
 
-    def tasks_on_enter(self, event):
+    def tasks_on_enter(self, event): # Swap image on hover
         self.tasks_image = Image.open("Tasks_Hover.png")
         self.small_tasks_image = self.tasks_image.resize((240, 108))
         self.tasks_image_tk = ImageTk.PhotoImage(self.small_tasks_image)
         self.tasks_button.config(image=self.tasks_image_tk)
 
-    def tasks_on_leave(self, event):
+    def tasks_on_leave(self, event): # Restore image when the user stops hovering
         self.tasks_image = Image.open("Tasks.png")
         self.small_tasks_image = self.tasks_image.resize((240, 108))
         self.tasks_image_tk = ImageTk.PhotoImage(self.small_tasks_image)
         self.tasks_button.config(image=self.tasks_image_tk)
 
+    #Functions to open other pages
     def openTasks(self):
-        # click_sound.play()
-        self.studi_frame.destroy()
-        TasksPage(root)
+        self.studi_frame.destroy()#Destroys current page
+        TasksPage(root) #Opens Tasks page
 
     def openSettings(self):
+        # Tracks which page opened the settings page in a global variable to allow the user to return to the correct pag
         global current_page
         current_page = "Timer"
-        self.studi_frame.destroy()
-        SettingsPage(root)
 
+        self.studi_frame.destroy() #Destroys current page
+        SettingsPage(root) #Opens Settings  page
 
     def exit_program(self):
         self.studi_frame.destroy()
         exit()
+
 
 class TasksPage:
     def __init__(self, parent):
         self.window_width = parent.winfo_screenwidth()
         self.window_height = parent.winfo_screenheight()
 
+        # Load and resize image to fit the screen
         self.background_image = Image.open("Tasks_Page.png")
         self.background_image = self.background_image.resize((self.window_width, self.window_height), Image.LANCZOS)
         self.background_image_tk = ImageTk.PhotoImage(self.background_image)
@@ -519,6 +536,7 @@ class TasksPage:
                                  borderwidth=0)
         self.image_label.place(relwidth=1, relheight=1)
 
+        #Loads button images
         self.settings_image = Image.open("Settings.png")
         self.settings_image_tk = ImageTk.PhotoImage(self.settings_image)
 
@@ -529,7 +547,7 @@ class TasksPage:
         self.exit_image = Image.open("Exit.png")
         self.exit_image_Tk = ImageTk.PhotoImage(self.exit_image)
 
-
+        #Creates buttons
         self.settings_button = Button(self.studi_frame, image=self.settings_image_tk, command=self.openSettings,
                                       cursor="hand2", bg="#8d0401", borderwidth=0, activebackground="#8d0401")
         self.settings_button.place(relx=0.9, rely=0.022)
@@ -624,6 +642,7 @@ class TasksPage:
         )
         self.complete_button.place(relx=0.775, rely=0.739)
 
+        #Creates listbox which displays the tasks
         self.tasks_list = Listbox(
             self.studi_frame,
             font=('Mont Heavy DEMO', 22),
@@ -636,9 +655,9 @@ class TasksPage:
         )
         self.tasks_list.place(anchor="center", relx=0.52, rely=0.42)
 
+        #Creates a scrollbar so that the user can scroll down the task list
         self.tasks_scrollbar = Scrollbar(self.studi_frame, highlightcolor="red")
         self.tasks_scrollbar.place(relx=0.7679, rely=0.225, relheight=0.4)
-
         self.tasks_list.config(yscrollcommand=self.tasks_scrollbar.set)
         self.tasks_scrollbar.config(command=self.tasks_list.yview)
 
@@ -657,26 +676,6 @@ class TasksPage:
         )
         self.save_button.place(relx=0.05, rely=0.20)
 
-        # self.help_text = Label(
-        #     self.studi_frame,
-        #     text = "Enter your subject",
-        #     font = ('Mont Heavy DEMO',22),
-        #     bg = "#b56904",
-        #     fg = "black"
-        # )
-        # self.help_text.place(relx=0.058,rely=0.38)
-        # pywinstyles.set_opacity(self.help_text,color = "#b56904")
-        #
-        # self.help_text2 = Label(
-        #     self.studi_frame,
-        #     text = "as the file name",
-        #     font = ('Mont Heavy DEMO',22),
-        #     bg = "#b56904",
-        #     fg = "black"
-        # )
-        # self.help_text2.place(relx=0.066,rely=0.412)
-        # pywinstyles.set_opacity(self.help_text2,color = "#b56904")
-
         self.open_button = customtkinter.CTkButton(
             self.studi_frame,
             text="OPEN",
@@ -691,33 +690,36 @@ class TasksPage:
             command=self.open_list
         )
         self.open_button.place(relx=0.05, rely=0.525)
+
     def add_task(self):
-        if self.enter_tasks.get().strip() == "":
+        if self.enter_tasks.get().strip() == "": #Prevents user from adding task if the input is empty
             pass
         else:
-            self.tasks_list.insert(END,"• " + self.enter_tasks.get())
-            self.enter_tasks.delete(0, END)
+            self.tasks_list.insert(END,"• " + self.enter_tasks.get()) #Adds the user's inputted task
+            self.enter_tasks.delete(0, END) #Deletes the text inside the entry box
 
     def edit_task(self):
-        if self.enter_tasks.get().strip() == "":
+        if self.enter_tasks.get().strip() == "": #Prevents user from editing task if the input is empty
             pass
         else:
             for item in self.tasks_list.curselection():
-                self.tasks_list.delete(item)
-                self.tasks_list.insert(item,"• " + self.enter_tasks.get())
-                self.enter_tasks.delete(0, END)
+                self.tasks_list.delete(item) #Delete currently selected task
+                self.tasks_list.insert(item,"• " + self.enter_tasks.get()) #Replaces deleted task with the new task at the same location
+                self.enter_tasks.delete(0, END) #Deletes the text inside the entry box
+
 
 
     def delete_task(self):
-        self.tasks_list.delete(ANCHOR)
+        self.tasks_list.delete(ANCHOR) #Delete currently selected task
 
     def complete_task(self):
         self.tasks_list.itemconfig(
-            self.tasks_list.curselection(),fg="#bab6b6"
+            self.tasks_list.curselection(),fg="#bab6b6" #Sets the selected task text color to a dark grey
         )
         self.tasks_list.selection_clear(0,END)
 
     def save_list(self):
+        #Saves the tasks in a .dat file
         file_name = filedialog.asksaveasfilename(
             initialdir=cwd,
             initialfile="",
@@ -737,6 +739,7 @@ class TasksPage:
         pickle.dump(tasks, output)
 
     def open_list(self):
+        #Opens the saved task file
         file_name = filedialog.askopenfilename(
             initialdir=cwd,
             title = "Open File",
@@ -752,14 +755,15 @@ class TasksPage:
                 self.tasks_list.insert(END,item)
 
     def openTimer(self):
-        self.studi_frame.destroy()
-        TimerPage(root)
+        self.studi_frame.destroy() #Destroys current frame
+        TimerPage(root) #Opens Timer page
 
     def openSettings(self):
+        # Tracks which page opened the settings page in a global variable to allow the user to return to the correct page
         global current_page
         current_page = "Tasks"
-        self.studi_frame.destroy()
-        SettingsPage(root)
+        self.studi_frame.destroy() #Destroys current frame
+        SettingsPage(root) #opens settings page
 
     def exit_program(self):
         self.studi_frame.destroy()
