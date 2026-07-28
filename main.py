@@ -201,7 +201,7 @@ class TimerPage:
             corner_radius=0,
             border_color="#9d0905",
             hover_color="#8c0603",
-            command = self.start_normal_timer
+            command = self.start_main
             )
         self.timer_button2.place(relx=0.21, rely=0.28)
 
@@ -287,24 +287,24 @@ class TimerPage:
         self.timer_label.place(anchor="center", relx=0.5, rely=0.5)
         pywinstyles.set_opacity(self.timer_label, color="#a50c08")
 
-        self.timer_status = customtkinter.CTkLabel(self.studi_frame, text="", font=('Mont Heavy DEMO', 50),
+        self.timer_status = customtkinter.CTkLabel(self.studi_frame, text="Press ▶ To Start", font=('Mont Heavy DEMO', 50),
                                                    text_color="white", fg_color="#a60c09")
         self.timer_status.place(anchor="center", relx=0.5, rely=0.585)
         pywinstyles.set_opacity(self.timer_status, color="#a60c09")
 
-        # self.reset_button = customtkinter.CTkButton(
-        #     self.studi_frame,
-        #     text="↻",
-        #     font=('Gaco Strong Demo', 50),
-        #     text_color="white",
-        #     fg_color="#a30b08",
-        #     border_width=0,
-        #     border_spacing=10,
-        #     corner_radius=0,
-        #     border_color="#9d0905",
-        #     hover_color="#8c0603",
-        #     command=self.reset_timer)
-        # self.reset_button.place(relx=0.78, rely=0.38)
+        self.reset_button = customtkinter.CTkButton(
+            self.studi_frame,
+            text="↻",
+            font=('Gaco Strong Demo', 50),
+            text_color="white",
+            fg_color="#a30b08",
+            border_width=0,
+            border_spacing=10,
+            corner_radius=0,
+            border_color="#9d0905",
+            hover_color="#8c0603",
+            command=self.reset_timer)
+        self.reset_button.place(relx=0.78, rely=0.38)
 
         self.tasks_button = Button(self.studi_frame, image=self.tasks_image_tk, command=self.openTasks, cursor="hand2",
                                    bg="#a60c09", borderwidth=0, activebackground="#a60c09")
@@ -319,7 +319,7 @@ class TimerPage:
         self.end_time = 0
         self.time_remaining = 0
         self.timer_id = None
-
+        self.current_mode = "main"
 
 
     def open_info(self):
@@ -385,34 +385,49 @@ class TimerPage:
                 self.timer_status.configure(text="Timer Running")
                 self.update_timer()
             else:
-                self.time_remaining = int(timer_length) * 60
+                if self.current_mode == "main":
+                    self.time_remaining = int(timer_length) * 60
+                elif self.current_mode == "short":
+                    self.time_remaining = int(short_break_length) * 60
+                else:
+                    self.time_remaining = int(long_break_length) * 60
+
                 self.is_timer_running = True
                 self.timer_status.configure(text="Timer Running")
                 self.update_timer()
 
-    def start_normal_timer(self):
+    def start_main(self):
+        self.current_mode = "main"
         self.cancel_timer()
         self.time_remaining = int(timer_length) * 60
-        self.is_timer_running = True
+        self.is_timer_running = False
         self.is_paused = False
-        self.timer_status.configure(text="Timer Running")
-        self.update_timer()
+        self.timer_status.configure(text="Press ▶ To Start")
+        minutes, seconds = divmod(self.time_remaining, 60)
+        time_formatted = f"{minutes:02d}:{seconds:02d}"
+        self.timer_label.config(text=time_formatted)
 
     def start_short(self):
+        self.current_mode = "short"
         self.cancel_timer()
         self.time_remaining = int(short_break_length) * 60
-        self.is_timer_running = True
+        self.is_timer_running = False
         self.is_paused = False
-        self.timer_status.configure(text="Timer Running")
-        self.update_timer()
+        self.timer_status.configure(text="Press ▶ To Start")
+        minutes, seconds = divmod(self.time_remaining, 60)
+        time_formatted = f"{minutes:02d}:{seconds:02d}"
+        self.timer_label.config(text=time_formatted)
 
     def start_long(self):
+        self.current_mode = "long"
         self.cancel_timer()
         self.time_remaining = int(long_break_length) * 60
-        self.is_timer_running = True
+        self.is_timer_running = False
         self.is_paused = False
-        self.timer_status.configure(text="Timer Running")
-        self.update_timer()
+        self.timer_status.configure(text="Press ▶ To Start")
+        minutes, seconds = divmod(self.time_remaining, 60)
+        time_formatted = f"{minutes:02d}:{seconds:02d}"
+        self.timer_label.config(text=time_formatted)
 
     def pause_timer(self):
         self.cancel_timer()
@@ -421,22 +436,12 @@ class TimerPage:
         self.timer_status.configure(text="Timer Paused")
 
     def reset_timer(self):
-        pass
-        # if any(char in "!@#$%^&*()-_=+`~[]{}|;:'\",<.>?/\\" for char in self.minute_entry.get()):
-        #     self.timer_status.configure(text="Cannot have special characters, try again!")
-        # elif self.minute_entry.get().strip() == "":
-        #     self.timer_status.configure(text="Please enter a number, try again!")
-        # elif any(char in "abcdefghijklmnopqrstuvwxyz" for char in self.minute_entry.get().lower()):
-        #     self.timer_status.configure(text="Cannot have letters, try again!")
-        # else:
-        #     self.cancel_timer()
-        #     self.is_timer_running = False
-        #     self.is_paused = False
-        #     self.time_remaining = int(self.minute_entry.get()) * 60
-        #     minutes, seconds = divmod(self.time_remaining, 60)
-        #     time_formatted = f"{minutes:02d}:{seconds:02d}"
-        #     self.timer_label.config(text=time_formatted)
-        #     self.timer_status.configure(text="")
+        if self.current_mode == "main":
+            self.start_main()
+        elif self.current_mode == "short":
+            self.start_short()
+        else:
+            self.start_long()
 
     def update_timer(self):
         if self.time_remaining > 0 and self.is_timer_running:
@@ -691,6 +696,7 @@ class TasksPage:
             pass
         else:
             self.tasks_list.insert(END,"• " + self.enter_tasks.get())
+            self.enter_tasks.delete(0, END)
 
     def edit_task(self):
         if self.enter_tasks.get().strip() == "":
@@ -699,6 +705,7 @@ class TasksPage:
             for item in self.tasks_list.curselection():
                 self.tasks_list.delete(item)
                 self.tasks_list.insert(item,"• " + self.enter_tasks.get())
+                self.enter_tasks.delete(0, END)
 
 
     def delete_task(self):
