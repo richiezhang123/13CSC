@@ -1,5 +1,4 @@
 from tkinter import *
-from tkinter.font import Font
 from PIL import Image, ImageTk
 import customtkinter
 import pywinstyles
@@ -8,7 +7,6 @@ from tkinter import filedialog
 import pickle
 import os
 
-from pyglet.window.key import LCOMMAND
 
 cwd = os.getcwd()
 
@@ -146,7 +144,6 @@ class MenuPage:
         # Tracks which page opened the settings page in a global variable to allow the user to return to the correct page
         global current_page
         current_page = "Menu"
-
         self.studi_frame.destroy() #Destroys current page
         SettingsPage(root) #Opens Settings  page
 
@@ -769,33 +766,33 @@ class TasksPage:
         self.studi_frame.destroy()
         exit()
 
-    def settings_on_enter(self, event):
+    def settings_on_enter(self, event):# Swap image on hover
         self.settings_image = Image.open("Settings_Hover.png")
         self.settings_image_tk = ImageTk.PhotoImage(self.settings_image)
         self.settings_button.config(image=self.settings_image_tk)
 
-    def settings_on_leave(self, event):
+    def settings_on_leave(self, event):# Restore image when the user stops hovering
         self.settings_image = Image.open("Settings.png")
         self.settings_image_tk = ImageTk.PhotoImage(self.settings_image)
         self.settings_button.config(image=self.settings_image_tk)
 
-    def exit_on_enter(self, event):
+    def exit_on_enter(self, event):# Swap image on hover
         self.exit_image = Image.open("Exit_Hover.png")
         self.exit_image_tk = ImageTk.PhotoImage(self.exit_image)
         self.exit_button.config(image=self.exit_image_tk)
 
-    def exit_on_leave(self, event):
+    def exit_on_leave(self, event):# Restore image when the user stops hovering
         self.exit_image = Image.open("Exit.png")
         self.exit_image_tk = ImageTk.PhotoImage(self.exit_image)
         self.exit_button.config(image=self.exit_image_tk)
 
-    def timer_on_enter(self, event):
+    def timer_on_enter(self, event):# Swap image on hover
         self.timer_image = Image.open("Timer_Hover.png")
         self.small_timer_image = self.timer_image.resize((240, 108))
         self.timer_image_tk = ImageTk.PhotoImage(self.small_timer_image)
         self.timer_button.config(image=self.timer_image_tk)
 
-    def timer_on_leave(self, event):
+    def timer_on_leave(self, event):# Restore image when the user stops hovering
         self.timer_image = Image.open("Timer.png")
         self.small_timer_image = self.timer_image.resize((240, 108))
         self.timer_image_tk = ImageTk.PhotoImage(self.small_timer_image)
@@ -806,6 +803,7 @@ class SettingsPage:
         self.window_width = parent.winfo_screenwidth()
         self.window_height = parent.winfo_screenheight()
 
+        #Load and resize background image to fit screen
         self.background_image = Image.open("Settings_Page.png")
         self.background_image = self.background_image.resize((self.window_width, self.window_height), Image.LANCZOS)
         self.background_image_tk = ImageTk.PhotoImage(self.background_image)
@@ -814,12 +812,13 @@ class SettingsPage:
         self.studi_frame.pack(fill=BOTH, expand=TRUE)
 
         self.image_label = Label(self.studi_frame, image=self.background_image_tk,
-                                 borderwidth=0)  # Creates a label, which holds the background image
+                                 borderwidth=0)
         self.image_label.place(relwidth=1, relheight=1)  # Ensures that the label/image fits the entire screen
 
         self.exit_image = Image.open("Exit.png")
         self.exit_image_Tk = ImageTk.PhotoImage(self.exit_image)
 
+        #Create widgets for main timer settings
         self.timer_text = customtkinter.CTkLabel(
             self.studi_frame,
             text="Timer",
@@ -854,6 +853,7 @@ class SettingsPage:
         )
         self.timer_entry_button.place(relx=0.464, rely=0.52)
 
+        # Create widgets for short break  settings
         self.short_timer_text = customtkinter.CTkLabel(
             self.studi_frame,
             text="Short Timer",
@@ -889,6 +889,7 @@ class SettingsPage:
         )
         self.short_timer_entry_button.place(relx=0.29, rely=0.725)
 
+        # Create widgets for long break settings
         self.long_timer_text = customtkinter.CTkLabel(
             self.studi_frame,
             text="Long Timer",
@@ -948,15 +949,22 @@ class SettingsPage:
         self.exit_button.place(relx=0.95, rely=0.027)
 
     def timer_add(self):
-        if any(char in "!@#$%^&*()-_=+`~[]{}|;:'\",<.>?/\\" for char in self.timer_entry.get()):
+        #Validity checks
+        if any(char in "!@#$%^&*()-_=+`~[]{}|;:'\",<.>?/\\" for char in self.timer_entry.get()): #Checks if input contains special characters
             self.error_text.place(relx=0.31, rely=0.825)
             self.error_text.configure(text="Cannot have special characters, try again!",text_color = "red")
-        elif self.timer_entry.get().strip() == "":
+        elif self.timer_entry.get().strip() == "": #Checks if input is empty
             self.error_text.place(relx=0.35, rely=0.825)
             self.error_text.configure(text="Please enter a number, try again!",text_color = "red")
-        elif any(char in "abcdefghijklmnopqrstuvwxyz" for char in self.timer_entry.get().lower()):
+        elif any(char in "abcdefghijklmnopqrstuvwxyz" for char in self.timer_entry.get().lower()): #Checks if input contains letters
             self.error_text.place(relx=0.36, rely=0.825)
             self.error_text.configure(text="Cannot have letters, try again!",text_color = "red")
+        elif int(self.timer_entry.get()) > 1440:#Checks if user input is greater than 1440 minutes (24 hours)
+            self.error_text.place(relx=0.32, rely=0.825)
+            self.error_text.configure(text="Length cannot exceed 24 hours, try again!",text_color = "red")
+        elif int(self.timer_entry.get()) < 1:#Checks if user input is less than 1 minute
+            self.error_text.place(relx=0.31, rely=0.825)
+            self.error_text.configure(text="Length must be at least 1 minute, try again!",text_color = "red")
         else:
             global timer_length
             timer_length = self.timer_entry.get()
@@ -965,15 +973,21 @@ class SettingsPage:
             self.timer_entry.delete(0,END)
 
     def short_timer_add(self):
-        if any(char in "!@#$%^&*()-_=+`~[]{}|;:'\",<.>?/\\" for char in self.short_timer_entry.get()):
+        if any(char in "!@#$%^&*()-_=+`~[]{}|;:'\",<.>?/\\" for char in self.short_timer_entry.get()):#Checks if input contains special characters
             self.error_text.place(relx=0.31, rely=0.825)
             self.error_text.configure(text="Cannot have special characters, try again!",text_color = "red")
-        elif self.short_timer_entry.get().strip() == "":
+        elif self.short_timer_entry.get().strip() == "":#Checks if input is empty
             self.error_text.place(relx=0.35, rely=0.825)
             self.error_text.configure(text="Please enter a number, try again!",text_color = "red")
-        elif any(char in "abcdefghijklmnopqrstuvwxyz" for char in self.short_timer_entry.get().lower()):
+        elif any(char in "abcdefghijklmnopqrstuvwxyz" for char in self.short_timer_entry.get().lower()):#Checks if input contains letters
             self.error_text.place(relx=0.36, rely=0.825)
             self.error_text.configure(text="Cannot have letters, try again!",text_color = "red")
+        elif int(self.short_timer_entry.get()) > 1440:#Checks if user input is greater than 1440 minutes (24 hours)
+            self.error_text.place(relx=0.32, rely=0.825)
+            self.error_text.configure(text="Length cannot exceed 24 hours, try again!",text_color = "red")
+        elif int(self.short_timer_entry.get()) < 1:#Checks if user input is less than 1 minute
+            self.error_text.place(relx=0.31, rely=0.825)
+            self.error_text.configure(text="Length must be at least 1 minute, try again!",text_color = "red")
         else:
             global short_break_length
             short_break_length = self.short_timer_entry.get()
@@ -982,15 +996,21 @@ class SettingsPage:
             self.short_timer_entry.delete(0,END)
 
     def long_timer_add(self):
-        if any(char in "!@#$%^&*()-_=+`~[]{}|;:'\",<.>?/\\" for char in self.long_timer_entry.get()):
+        if any(char in "!@#$%^&*()-_=+`~[]{}|;:'\",<.>?/\\" for char in self.long_timer_entry.get()):#Checks if input contains special characters
             self.error_text.place(relx=0.31, rely=0.825)
             self.error_text.configure(text="Cannot have special characters, try again!",text_color = "red")
-        elif self.long_timer_entry.get().strip() == "":
+        elif self.long_timer_entry.get().strip() == "":#Checks if input is empty
             self.error_text.place(relx=0.35, rely=0.825)
             self.error_text.configure(text="Please enter a number, try again!",text_color = "red")
-        elif any(char in "abcdefghijklmnopqrstuvwxyz" for char in self.long_timer_entry.get().lower()):
+        elif any(char in "abcdefghijklmnopqrstuvwxyz" for char in self.long_timer_entry.get().lower()):#Checks if input contains letters
             self.error_text.place(relx=0.36, rely=0.825)
             self.error_text.configure(text="Cannot have letters, try again!",text_color = "red")
+        elif int(self.long_timer_entry.get()) > 1440:#Checks if user input is greater than 1440 minutes (24 hours)
+            self.error_text.place(relx=0.32, rely=0.825)
+            self.error_text.configure(text="Length cannot exceed 24 hours, try again!",text_color = "red")
+        elif int(self.long_timer_entry.get()) < 1:#Checks if user input is less than 1 minute
+            self.error_text.place(relx=0.31, rely=0.825)
+            self.error_text.configure(text="Length must be at least 1 minute, try again!",text_color = "red")
         else:
             global long_break_length
             long_break_length = self.long_timer_entry.get()
@@ -999,19 +1019,16 @@ class SettingsPage:
             self.long_timer_entry.delete(0,END)
 
     def return_page(self):
-        global current_page
+        #Tracks which page opened the settings page, then returns to that page when the function is called
         if current_page=="Menu":
-            print("MENU")
             self.studi_frame.destroy()
             MenuPage(root)
 
         elif current_page == "Timer":
-            print("TIMER")
             self.studi_frame.destroy()
             TimerPage(root)
 
         elif current_page == "Tasks":
-            print("TASKS")
             self.studi_frame.destroy()
             TasksPage(root)
 
